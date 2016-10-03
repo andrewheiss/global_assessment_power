@@ -110,3 +110,13 @@ fig.cum.gpas
 
 fig.save.cairo(fig.cum.gpas, filename="figure-1-cumulative-gpas",
                width=5, height=3.5)
+
+
+#' ## Figure 5: Pathways of GPA influence. 
+#' 
+#' *Source: Adapted from Kelley and Simmons, 2015.*
+#' 
+#' ![](`r file.path(PROJHOME, "Output")`/figure-5-pathways.png)
+#' 
+#' (located at `./Output/figure-5-pathways.pdf` and `./Output/figure-5-pathways.png`)
+#' 
