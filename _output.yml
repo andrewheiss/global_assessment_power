@@ -1,0 +1,10 @@
+html_document:
+  code_folding: hide
+  toc: yes
+  toc_float: true
+  toc_depth: 4
+  highlight: pygments
+  self_contained: false
+  theme: flatly
+  fig_height: 3
+  fig_width: 4.5

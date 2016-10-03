@@ -1,0 +1,16 @@
+# R stuff
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+# R output stuff
+**_files/*
+Output/*
+*.html
+
+# Graphics (for now)
+Graphics/*
+
+# Data (for now)
+Data/*
