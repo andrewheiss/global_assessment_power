@@ -1,3 +1,3 @@
-RPROJ <- list(PROJHOME = normalizePath("../.."))
+RPROJ <- list(PROJHOME = normalizePath(".."))
 attach(RPROJ)
 rm(RPROJ)
