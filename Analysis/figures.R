@@ -296,7 +296,7 @@ fig.save.cairo(fig.by.country, filename="figure-4-gpas-by-country",
 #' 
 #' *Source: Adapted from Kelley and Simmons, 2015.*
 #' 
-#' ![](`r file.path(PROJHOME, "Output")`/figure-5-pathways.png)
+#' ![](http://stats.andrewheiss.com/judith/gpas/Output/figure-5-pathways.png)
 #' 
 #' (located at `./Output/figure-5-pathways.pdf` and `./Output/figure-5-pathways.png`)
 #' 
