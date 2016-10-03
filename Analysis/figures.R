@@ -54,7 +54,7 @@ gpa.data.raw <- read_excel(file.path(PROJHOME, "Data", "masterdata1.1.xlsx"),
 # chokes on all the duplicated NA column names
 gpa.data.clean <- gpa.data.raw[, 1:30]
 
-#' ## Figure 1: Cumulative number of GPAs
+#' ## Figure 1: Cumulative number of GPAs.
 year.chunks <- tribble(
   ~chunk_start, ~chunk_end, ~chunk_name,
   1900,         1969,       "Pre-1970",
@@ -104,7 +104,8 @@ fig.cum.gpas <- ggplot(gpa.cum.plot, aes(x=chunk_name, y=plot_value, fill=Active
   geom_bar(stat="identity", position="stack") +
   scale_fill_manual(values=c("grey70", "grey10"), name=NULL) +
   labs(x=NULL, y=NULL) +
-  theme_gpa()
+  theme_gpa() + theme(legend.key.size=unit(0.65, "lines"),
+                      legend.key=element_blank(), legend.margin=unit(0.25, "lines"))
 fig.cum.gpas
 
 fig.save.cairo(fig.cum.gpas, filename="figure-1-cumulative-gpas",
