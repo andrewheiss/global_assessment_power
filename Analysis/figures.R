@@ -234,6 +234,62 @@ fig.save.cairo(fig.by.creator, filename="figure-3-gpas-by-creator",
                width=5, height=3.5)
 
 
+#' ## Figure 4: Country of GPA source headquarters.
+countries <- tribble(
+  ~country,                       ~country_clean,
+  "Austraila",                    "Other developed nations",
+  "Australia/India",              "Other developed nations",
+  "Austria",                      "Europe",
+  "Belgium",                      "Europe",
+  "Canada",                       "Other developed nations",
+  "Ethiopia",                     "Global South",
+  "Fiji",                         "Global South",
+  "France",                       "Europe",
+  "France/ USA",                  "Europe",
+  "Germany",                      "Europe",
+  "Holland",                      "Europe",
+  "international collaboration",  "Other developed nations",
+  "Italy",                        "Europe",
+  "Lithuania",                    "Europe",
+  "Netherlands",                  "Europe",
+  "Phillippines",                 "Global South",
+  "Singapore",                    "Global South",
+  "South Korea",                  "Other developed nations",
+  "Spain",                        "Europe",
+  "Switzerland",                  "Europe",
+  "Uk",                           "United Kingdom",
+  "UK",                           "United Kingdom",
+  "United Kingdom",               "United Kingdom",
+  "United States",                "United States",
+  "Unknown",                      "Unknown",
+  "Uruguay",                      "Global South",
+  "USA",                          "United States"
+)
+
+gpa.countries <- gpa.data.clean %>%
+  # Bring in clean and consolidated country names
+  left_join(countries, by=c("country of origin" = "country")) %>%
+  # Get a count of each creating country
+  group_by(country_clean) %>%
+  summarise(num = n()) %>%
+  filter(!is.na(country_clean), country_clean != "Unknown") %>%
+  arrange(num) %>%
+  mutate(country_clean = fct_inorder(country_clean))
+
+#' *Source: Authors' database.*
+#' 
+#' N = `r sum(gpa.countries$num)`.
+#' 
+fig.by.country <- ggplot(gpa.countries, aes(x=num, y=country_clean)) +
+  geom_barh(stat="identity") +
+  labs(x=NULL, y=NULL) +
+  theme_gpa()
+fig.by.country
+
+fig.save.cairo(fig.by.country, filename="figure-4-gpas-by-country",
+               width=5, height=3.5)
+
+
 #' ## Figure 5: Pathways of GPA influence. 
 #' 
 #' *Source: Adapted from Kelley and Simmons, 2015.*
