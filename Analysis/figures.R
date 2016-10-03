@@ -115,7 +115,7 @@ fig.cum.gpas <- ggplot(gpa.cum.plot, aes(x=chunk_name, y=plot_value, fill=Active
 fig.cum.gpas
 
 fig.save.cairo(fig.cum.gpas, filename="figure-1-cumulative-gpas",
-               width=5, height=3.5)
+               width=5, height=2.5)
 
 
 #' ## Figure 2: Number of GPAs, by issue.
@@ -233,7 +233,7 @@ fig.by.creator <- ggplot(gpa.creators, aes(x=num, y=creator_clean)) +
 fig.by.creator
 
 fig.save.cairo(fig.by.creator, filename="figure-3-gpas-by-creator",
-               width=5, height=3.5)
+               width=5, height=2.5)
 
 
 #' ## Figure 4: Country of GPA source headquarters.
@@ -289,7 +289,7 @@ fig.by.country <- ggplot(gpa.countries, aes(x=num, y=country_clean)) +
 fig.by.country
 
 fig.save.cairo(fig.by.country, filename="figure-4-gpas-by-country",
-               width=5, height=3.5)
+               width=5, height=2.5)
 
 
 #' ## Figure 5: Pathways of GPA influence. 
