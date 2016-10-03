@@ -8,10 +8,15 @@
 library(tidyverse)
 library(readxl)
 library(forcats)
+library(stringr)
 library(Cairo)
+library(ggstance)
+
 
 # Useful functions
 theme_gpa <- function(base_size=9, base_family="Clear Sans Light") {
+  update_geom_defaults("bar", list(fill = "grey30"))
+  update_geom_defaults("line", list(colour = "grey30"))
   update_geom_defaults("label", list(family="Clear Sans Light"))
   update_geom_defaults("text", list(family="Clear Sans Light"))
   ret <- theme_bw(base_size, base_family) + 
@@ -46,13 +51,14 @@ fig.save.cairo <- function(fig, filepath=file.path(PROJHOME, "Output"),
          width=width, height=height, units=units, type="cairo", dpi=300, ...)
 }
 
+
 # Load and clean data
 gpa.data.raw <- read_excel(file.path(PROJHOME, "Data", "masterdata1.1.xlsx"),
                            sheet="main data sheet")
 
 # Only use the first 30 columns. Need to use [,] indexing because dplyr::select
 # chokes on all the duplicated NA column names
-gpa.data.clean <- gpa.data.raw[, 1:30]
+gpa.data.clean <- gpa.data.raw[, 2:30]
 
 #' ## Figure 1: Cumulative number of GPAs.
 year.chunks <- tribble(
@@ -102,13 +108,90 @@ gpa.cum.plot <- gpa.data.clean %>%
 #' 
 fig.cum.gpas <- ggplot(gpa.cum.plot, aes(x=chunk_name, y=plot_value, fill=Active)) +
   geom_bar(stat="identity", position="stack") +
-  scale_fill_manual(values=c("grey70", "grey10"), name=NULL) +
+  scale_fill_manual(values=c("grey70", "grey30"), name=NULL) +
   labs(x=NULL, y=NULL) +
   theme_gpa() + theme(legend.key.size=unit(0.65, "lines"),
                       legend.key=element_blank(), legend.margin=unit(0.25, "lines"))
 fig.cum.gpas
 
 fig.save.cairo(fig.cum.gpas, filename="figure-1-cumulative-gpas",
+               width=5, height=3.5)
+
+
+#' ## Figure 2: Number of GPAs, by issue.
+gpa.issues <- gpa.data.clean %>%
+  # Only look at active GPAs
+  dplyr::filter(Active == 1) %>%
+  # Multiple GPA issues are split with a "/" (sometimes followed by a space);
+  # split into a list column and then unnest that column
+  mutate(issue = str_split(`subject area`, "/ *")) %>%
+  unnest(issue) %>%
+  # Clean up issue names
+  mutate(issue = str_trim(tolower(issue))) %>%
+  mutate(issue = case_when(
+    .$issue == "economy" ~ "economic",
+    .$issue == "economics" ~ "economic",
+    .$issue == "environmen" ~ "environment",
+    .$issue == "envirionment" ~ "environment",
+    .$issue == "goveranance" ~ "governance",
+    .$issue == "goverance" ~ "governance",
+    .$issue == "governanc" ~ "governance",
+    .$issue == "governanc" ~ "governance",
+    .$issue == "governence" ~ "governance",
+    .$issue == "governace" ~ "governance",
+    .$issue == "government" ~ "governance",
+    TRUE ~ .$issue
+  )) %>%
+  # Collapse some categories
+  mutate(issue_collapsed = recode(issue,
+                                  conflict = "security",
+                                  military = "security",
+                                  aid = "development",
+                                  health = "development",
+                                  energy = "development",
+                                  tourism = "development",
+                                  education = "development",
+                                  trade = "trade & finance",
+                                  finance = "trade & finance",
+                                  technology = "trade & finance",
+                                  `press freedom` = "human rights",
+                                  religion = "human rights",
+                                  gender = "human rights",
+                                  `intellectual property rights` = "legal",
+                                  privacy = "legal")) %>%
+  filter(!is.na(issue_collapsed), issue_collapsed != "other") %>%
+  # Get unique combinations of organizations and collapsed issues (for cases
+  # where a collapsed category gets duplicated; like if the GPA did aid and
+  # health, which are now both development)
+  distinct(name, issue_collapsed) %>%
+  # Get a count of each collapsed issue
+  group_by(issue_collapsed) %>%
+  summarise(issue_count = n()) %>%
+  ungroup() %>%
+  arrange(issue_count) %>%
+  mutate(issue_collapsed = str_to_title(issue_collapsed)) %>%
+  mutate(issue_collapsed = fct_inorder(issue_collapsed))
+
+#' *Source: Authors' database.* 
+#' 
+#' Note: Includes only "active" GPAs as of 2012; excludes defunct cases. Note
+#' that the total count of GPAs is larger than in Figure 1 because we have
+#' double counted cases that straddle issue areas, such as health and
+#' development.
+#' 
+#' Several categories collapse the following subcategories: security =
+#' conflict, military; development = development, aid, health, energy, tourism,
+#' education; trade & finance = trade, financy, education; human rights = human
+#' rights, press freedom, religion, gender; legal = legal, intellectual 
+#' property rights, privacy.
+#' 
+fig.by.issue <- ggplot(gpa.issues, aes(x=issue_count, y=issue_collapsed)) + 
+  geom_barh(stat="identity") + 
+  labs(x=NULL, y=NULL) +
+  theme_gpa()
+fig.by.issue
+
+fig.save.cairo(fig.by.issue, filename="figure-2-gpas-by-issue",
                width=5, height=3.5)
 
 
