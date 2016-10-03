@@ -185,6 +185,8 @@ gpa.issues <- gpa.data.clean %>%
 #' rights, press freedom, religion, gender; legal = legal, intellectual 
 #' property rights, privacy.
 #' 
+#' N = `r length(unique(gpa.data.clean$name))` unique GPAs.
+#' 
 fig.by.issue <- ggplot(gpa.issues, aes(x=issue_count, y=issue_collapsed)) + 
   geom_barh(stat="identity") + 
   labs(x=NULL, y=NULL) +
