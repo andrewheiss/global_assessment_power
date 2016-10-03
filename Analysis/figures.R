@@ -195,6 +195,45 @@ fig.save.cairo(fig.by.issue, filename="figure-2-gpas-by-issue",
                width=5, height=3.5)
 
 
+#' ## Figure 3: GPA creators, by type.
+creator.types <- tribble(
+  ~creator_type, ~creator_codebook,   ~creator_clean,
+  1,             "University",          "University",
+  2,             "National government", "National government",
+  3,             "NGO",                 "NGO",
+  4,             "Private",             "Private",
+  5,             "IGO",                 "IGO",
+  6,             "NGO/university",      "Overlapping or unknown",
+  7,             "IGO/university",      "Overlapping or unknown",
+  8,             "NGO/country agency",  "Overlapping or unknown",
+  9,             "Missing or other",    "Overlapping or unknown"
+)
+
+gpa.creators <- gpa.data.clean %>%
+  # Make NAs = 9, since that's the missing category
+  mutate(creator_type = ifelse(is.na(creator_type), 9, creator_type)) %>%
+  # Bring in clean creator names
+  left_join(creator.types, by="creator_type") %>%
+  # Get count of GPAs by creator type
+  group_by(creator_clean) %>%
+  summarise(num = n()) %>%
+  arrange(num) %>%
+  mutate(creator_clean = fct_inorder(creator_clean))
+
+#' *Source: Authors' database.*
+#' 
+#' N = `r sum(gpa.creators$num)`.
+#' 
+fig.by.creator <- ggplot(gpa.creators, aes(x=num, y=creator_clean)) +
+  geom_barh(stat="identity") +
+  labs(x=NULL, y=NULL) +
+  theme_gpa()
+fig.by.creator
+
+fig.save.cairo(fig.by.creator, filename="figure-3-gpas-by-creator",
+               width=5, height=3.5)
+
+
 #' ## Figure 5: Pathways of GPA influence. 
 #' 
 #' *Source: Adapted from Kelley and Simmons, 2015.*
