@@ -7,4 +7,4 @@ html_document:
   self_contained: false
   theme: flatly
   fig_height: 3
-  fig_width: 4.5
+  fig_width: 5
