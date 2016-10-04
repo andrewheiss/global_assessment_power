@@ -11,6 +11,8 @@ library(forcats)
 library(stringr)
 library(Cairo)
 library(ggstance)
+library(maptools)
+library(rgdal)
 
 
 # Useful functions
@@ -40,6 +42,15 @@ theme_gpa <- function(base_size=9, base_family="Clear Sans Light") {
           legend.key=element_blank(),
           legend.margin=unit(0.2, "lines"))
   
+  ret
+}
+
+theme_blank_map <- function(base_size=9, base_family="Clear Sans Light") {
+  ret <- theme_bw(base_size, base_family) + 
+    theme(panel.background = element_rect(fill="#ffffff", colour=NA),
+          panel.border=element_blank(), axis.line=element_blank(),
+          panel.grid=element_blank(), axis.ticks=element_blank(),
+          axis.title=element_blank(), axis.text=element_blank())
   ret
 }
 
@@ -238,34 +249,34 @@ fig.save.cairo(fig.by.creator, filename="figure-3-gpas-by-creator",
 
 #' ## Figure 4: Country of GPA source headquarters.
 countries <- tribble(
-  ~country,                       ~country_clean,
-  "Austraila",                    "Other developed nations",
-  "Australia/India",              "Other developed nations",
-  "Austria",                      "Europe",
-  "Belgium",                      "Europe",
-  "Canada",                       "Other developed nations",
-  "Ethiopia",                     "Global South",
-  "Fiji",                         "Global South",
-  "France",                       "Europe",
-  "France/ USA",                  "Europe",
-  "Germany",                      "Europe",
-  "Holland",                      "Europe",
-  "international collaboration",  "Other developed nations",
-  "Italy",                        "Europe",
-  "Lithuania",                    "Europe",
-  "Netherlands",                  "Europe",
-  "Phillippines",                 "Global South",
-  "Singapore",                    "Global South",
-  "South Korea",                  "Other developed nations",
-  "Spain",                        "Europe",
-  "Switzerland",                  "Europe",
-  "Uk",                           "United Kingdom",
-  "UK",                           "United Kingdom",
-  "United Kingdom",               "United Kingdom",
-  "United States",                "United States",
-  "Unknown",                      "Unknown",
-  "Uruguay",                      "Global South",
-  "USA",                          "United States"
+  ~country,                       ~country_clean,             ~ ISO3,
+  "Austraila",                    "Other developed nations",  "AUS",
+  "Australia/India",              "Other developed nations",  "AUS",
+  "Austria",                      "Europe",                   "AUT",
+  "Belgium",                      "Europe",                   "BEL",
+  "Canada",                       "Other developed nations",  "CAN",
+  "Ethiopia",                     "Global South",             "ETH",
+  "Fiji",                         "Global South",             "FJI",
+  "France",                       "Europe",                   "FRA",
+  "France/ USA",                  "Europe",                   "FRA",
+  "Germany",                      "Europe",                   "DEU",
+  "Holland",                      "Europe",                   "NLD",
+  "international collaboration",  "Other developed nations",  NA,
+  "Italy",                        "Europe",                   "ITA",
+  "Lithuania",                    "Europe",                   "LTU",
+  "Netherlands",                  "Europe",                   "NLD",
+  "Phillippines",                 "Global South",             "PHL",
+  "Singapore",                    "Global South",             "SGP",
+  "South Korea",                  "Other developed nations",  "KOR",
+  "Spain",                        "Europe",                   "ESP",
+  "Switzerland",                  "Europe",                   "CHE",
+  "Uk",                           "United Kingdom",           "GBR",
+  "UK",                           "United Kingdom",           "GBR",
+  "United Kingdom",               "United Kingdom",           "GBR",
+  "United States",                "United States",            "USA",
+  "Unknown",                      "Unknown",                  NA,
+  "Uruguay",                      "Global South",             "URY",
+  "USA",                          "United States",            "USA"
 )
 
 gpa.countries <- gpa.data.clean %>%
@@ -290,6 +301,76 @@ fig.by.country
 
 fig.save.cairo(fig.by.country, filename="figure-4-gpas-by-country",
                width=5, height=2.5)
+
+
+#' ## Figure 4: Country of GPA source headquarters (maps).
+# Load map data
+if (!file.exists(file.path(PROJHOME, "Data", "map_data", 
+                           "ne_110m_admin_0_countries.VERSION.txt"))) {
+  map.url <- paste0("http://www.naturalearthdata.com/", 
+                    "http//www.naturalearthdata.com/download/110m/cultural/", 
+                    "ne_110m_admin_0_countries.zip")
+  map.tmp <- file.path(PROJHOME, "Data", basename(map.url))
+  download.file(map.url, map.tmp)
+  unzip(map.tmp, exdir=file.path(PROJHOME, "Data", "map_data"))
+  unlink(map.tmp)
+}
+
+#+ message=FALSE, warning=FALSE
+countries.map <- readOGR(file.path(PROJHOME, "Data", "map_data"), 
+                         "ne_110m_admin_0_countries",
+                         verbose=FALSE)
+countries.robinson <- spTransform(countries.map, CRS("+proj=robin"))
+countries.ggmap <- fortify(countries.robinson, region="iso_a3") %>%
+  filter(!(id %in% c("ATA", -99))) %>%  # Get rid of Antarctica and NAs
+  mutate(id = ifelse(id == "GRL", "DNK", id))  # Greenland is part of Denmark
+
+possible.countries <- data_frame(ISO3 = unique(as.character(countries.ggmap$id)))
+
+gpa.countries.map <- gpa.data.clean %>%
+  # Bring in clean and consolidated country names
+  left_join(countries, by=c("country of origin" = "country")) %>%
+  # Get a count of each creating country
+  group_by(ISO3) %>%
+  summarise(num = n()) %>%
+  filter(!is.na(ISO3)) %>%
+  # Bring in full list of countries and create new variable indicating if the
+  # country has any GPAs
+  right_join(possible.countries, by="ISO3") %>%
+  mutate(num.bin = !is.na(num),
+         num.ceiling = ifelse(num >= 10, 10, num))
+
+#' *Source: Authors' data*
+#' 
+#' N = `r sum(gpa.countries.map$num.bin)` countries.
+#' 
+
+gpa.map.bin <- ggplot(gpa.countries.map, aes(fill=num.bin, map_id=ISO3)) +
+  geom_map(map=countries.ggmap, size=0.15, colour="black") + 
+  expand_limits(x=countries.ggmap$long, y=countries.ggmap$lat) + 
+  coord_equal() +
+  scale_fill_manual(values = c("white", "grey30"), guide=FALSE) + 
+  theme_blank_map()
+gpa.map.bin
+
+fig.save.cairo(gpa.map.bin, filename="figure-4-gpas-by-country-map-bin",
+               width=5, height=4)
+
+gpa.map <- ggplot(gpa.countries.map, aes(fill=num.ceiling, map_id=ISO3)) +
+  geom_map(map=countries.ggmap, size=0.15, colour="black") + 
+  expand_limits(x=countries.ggmap$long, y=countries.ggmap$lat) + 
+  coord_equal() +
+  scale_fill_gradient(low="grey90", high="grey30", breaks=seq(2, 10, 2), 
+                      labels=c(paste(seq(2, 8, 2), "  "), "10+"),
+                      na.value="white", name="GPAs based in country",
+                      guide=guide_colourbar(ticks=FALSE, barwidth=5)) + 
+  theme_blank_map() +
+  theme(legend.position="bottom", legend.key.size=unit(0.65, "lines"),
+        strip.background=element_rect(colour="#FFFFFF", fill="#FFFFFF"))
+gpa.map
+
+fig.save.cairo(gpa.map, filename="figure-4-gpas-by-country-map",
+               width=5, height=4)
 
 
 #' ## Figure 5: Pathways of GPA influence. 
