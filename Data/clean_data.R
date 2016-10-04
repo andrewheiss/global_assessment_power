@@ -10,13 +10,15 @@ library(readxl)
 library(stringr)
 
 # Load and clean data
-gpa.data.raw <- read_excel(file.path(PROJHOME, "Data", "masterdata1.1.xlsx"),
+gpa.data.raw <- read_excel(file.path(PROJHOME, "Data", "masterdata1.2.xlsx"),
                            sheet="main data sheet")
 
 # Only use the first 30 columns. Need to use [,] indexing because dplyr::select
 # chokes on all the duplicated NA column names
-gpa.data.clean <- gpa.data.raw[, 2:30] %>%
+gpa.data.clean <- gpa.data.raw[, 2:31] %>%
   filter(!is.na(name)) %>%
+  filter(duplicate != 1) %>%
+  arrange(name) %>%
   mutate(gpa_id = row_number())
 
 
@@ -160,4 +162,4 @@ gpa.data.final <- gpa.data.clean %>%
 
 write_csv(gpa.data.final,
           path=file.path(PROJHOME, "Data",
-                         "kelley_simmons_gpa_2015-10-03.csv"))
+                         "kelley_simmons_gpa_2015-10-04.csv"))
