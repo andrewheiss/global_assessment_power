@@ -6,7 +6,6 @@
 
 #+ message=FALSE
 library(tidyverse)
-library(readxl)
 library(forcats)
 library(stringr)
 library(Cairo)
@@ -63,13 +62,10 @@ fig.save.cairo <- function(fig, filepath=file.path(PROJHOME, "Output"),
 }
 
 
-# Load and clean data
-gpa.data.raw <- read_excel(file.path(PROJHOME, "Data", "masterdata1.1.xlsx"),
-                           sheet="main data sheet")
+# Load clean data
+#+ message=FALSE
+gpa.data.clean <- read_csv(file.path(PROJHOME, "Data", "kelley_simmons_gpa_2015-10-03.csv"))
 
-# Only use the first 30 columns. Need to use [,] indexing because dplyr::select
-# chokes on all the duplicated NA column names
-gpa.data.clean <- gpa.data.raw[, 2:30]
 
 #' ## Figure 1: Cumulative number of GPAs.
 year.chunks <- tribble(
@@ -89,7 +85,7 @@ year.chunks <- tribble(
 
 gpa.cum.plot <- gpa.data.clean %>%
   # Calculuate the number of GPAs in each year by active status
-  group_by(start_year, Active) %>%
+  group_by(start_year, active) %>%
   summarise(num = n()) %>%
   ungroup() %>%
   # Join the year chunks to the summary table 
@@ -99,15 +95,15 @@ gpa.cum.plot <- gpa.data.clean %>%
   filter(start_year >= chunk_start, start_year <= chunk_end) %>%
   select(-temp) %>%
   # Calculate number of GPAs in each chunk
-  group_by(chunk_name, Active) %>%
+  group_by(chunk_name, active) %>%
   summarise(total = sum(num)) %>%
   # Calculate the cumulative sum of active GPAs
-  group_by(Active) %>%
+  group_by(active) %>%
   mutate(cum_total = cumsum(total)) %>%
   ungroup() %>%
   # Plot the cumulative number of GPAs and the actual number of defunct GPAs
-  mutate(plot_value = ifelse(Active == 1, cum_total, total)) %>%
-  mutate(Active = factor(Active, levels=c(1, 0),
+  mutate(plot_value = ifelse(active == 1, cum_total, total)) %>%
+  mutate(active = factor(active, levels=c(1, 0),
                          labels=c("Continuously in use   ", "Now defunct"),
                          ordered=TRUE))
 
@@ -117,7 +113,7 @@ gpa.cum.plot <- gpa.data.clean %>%
 #' that year but were discontinued. Light grey bars represent GPAs that meet
 #' our criteria and appear to be regularly updated as of 2012.
 #' 
-fig.cum.gpas <- ggplot(gpa.cum.plot, aes(x=chunk_name, y=plot_value, fill=Active)) +
+fig.cum.gpas <- ggplot(gpa.cum.plot, aes(x=chunk_name, y=plot_value, fill=active)) +
   geom_bar(stat="identity", position="stack") +
   scale_fill_manual(values=c("grey70", "grey30"), name=NULL) +
   labs(x=NULL, y=NULL) +
@@ -131,57 +127,15 @@ fig.save.cairo(fig.cum.gpas, filename="figure-1-cumulative-gpas",
 
 #' ## Figure 2: Number of GPAs, by issue.
 gpa.issues <- gpa.data.clean %>%
-  # Only look at active GPAs
-  dplyr::filter(Active == 1) %>%
-  # Multiple GPA issues are split with a "/" (sometimes followed by a space);
-  # split into a list column and then unnest that column
-  mutate(issue = str_split(`subject area`, "/ *")) %>%
-  unnest(issue) %>%
-  # Clean up issue names
-  mutate(issue = str_trim(tolower(issue))) %>%
-  mutate(issue = case_when(
-    .$issue == "economy" ~ "economic",
-    .$issue == "economics" ~ "economic",
-    .$issue == "environmen" ~ "environment",
-    .$issue == "envirionment" ~ "environment",
-    .$issue == "goveranance" ~ "governance",
-    .$issue == "goverance" ~ "governance",
-    .$issue == "governanc" ~ "governance",
-    .$issue == "governanc" ~ "governance",
-    .$issue == "governence" ~ "governance",
-    .$issue == "governace" ~ "governance",
-    .$issue == "government" ~ "governance",
-    TRUE ~ .$issue
-  )) %>%
-  # Collapse some categories
-  mutate(issue_collapsed = recode(issue,
-                                  conflict = "security",
-                                  military = "security",
-                                  aid = "development",
-                                  health = "development",
-                                  energy = "development",
-                                  tourism = "development",
-                                  education = "development",
-                                  trade = "trade & finance",
-                                  finance = "trade & finance",
-                                  technology = "trade & finance",
-                                  `press freedom` = "human rights",
-                                  religion = "human rights",
-                                  gender = "human rights",
-                                  `intellectual property rights` = "legal",
-                                  privacy = "legal")) %>%
-  filter(!is.na(issue_collapsed), issue_collapsed != "other") %>%
-  # Get unique combinations of organizations and collapsed issues (for cases
-  # where a collapsed category gets duplicated; like if the GPA did aid and
-  # health, which are now both development)
-  distinct(name, issue_collapsed) %>%
+  filter(active == 1, !is.na(subject_collapsed)) %>%
+  mutate(subject_collapsed = str_split(subject_collapsed, ", ")) %>%
+  unnest(subject_collapsed) %>%
   # Get a count of each collapsed issue
-  group_by(issue_collapsed) %>%
+  group_by(subject_collapsed) %>%
   summarise(issue_count = n()) %>%
   ungroup() %>%
   arrange(issue_count) %>%
-  mutate(issue_collapsed = str_to_title(issue_collapsed)) %>%
-  mutate(issue_collapsed = fct_inorder(issue_collapsed))
+  mutate(subject_collapsed = fct_inorder(subject_collapsed))
 
 #' *Source: Authors' database.* 
 #' 
@@ -196,9 +150,9 @@ gpa.issues <- gpa.data.clean %>%
 #' rights, press freedom, religion, gender; legal = legal, intellectual 
 #' property rights, privacy.
 #' 
-#' N = `r length(unique(gpa.data.clean$name))` unique GPAs.
+#' N = `r nrow(gpa.data.clean)` unique GPAs.
 #' 
-fig.by.issue <- ggplot(gpa.issues, aes(x=issue_count, y=issue_collapsed)) + 
+fig.by.issue <- ggplot(gpa.issues, aes(x=issue_count, y=subject_collapsed)) + 
   geom_barh(stat="identity") + 
   labs(x=NULL, y=NULL) +
   theme_gpa()
@@ -209,35 +163,18 @@ fig.save.cairo(fig.by.issue, filename="figure-2-gpas-by-issue",
 
 
 #' ## Figure 3: GPA creators, by type.
-creator.types <- tribble(
-  ~creator_type, ~creator_codebook,   ~creator_clean,
-  1,             "University",          "University",
-  2,             "National government", "National government",
-  3,             "NGO",                 "NGO",
-  4,             "Private",             "Private",
-  5,             "IGO",                 "IGO",
-  6,             "NGO/university",      "Overlapping or unknown",
-  7,             "IGO/university",      "Overlapping or unknown",
-  8,             "NGO/country agency",  "Overlapping or unknown",
-  9,             "Missing or other",    "Overlapping or unknown"
-)
-
 gpa.creators <- gpa.data.clean %>%
-  # Make NAs = 9, since that's the missing category
-  mutate(creator_type = ifelse(is.na(creator_type), 9, creator_type)) %>%
-  # Bring in clean creator names
-  left_join(creator.types, by="creator_type") %>%
-  # Get count of GPAs by creator type
-  group_by(creator_clean) %>%
+  filter(!is.na(creator_collapsed)) %>%
+  group_by(creator_collapsed) %>%
   summarise(num = n()) %>%
   arrange(num) %>%
-  mutate(creator_clean = fct_inorder(creator_clean))
+  mutate(creator_collapsed = fct_inorder(creator_collapsed))
 
 #' *Source: Authors' database.*
 #' 
 #' N = `r sum(gpa.creators$num)`.
 #' 
-fig.by.creator <- ggplot(gpa.creators, aes(x=num, y=creator_clean)) +
+fig.by.creator <- ggplot(gpa.creators, aes(x=num, y=creator_collapsed)) +
   geom_barh(stat="identity") +
   labs(x=NULL, y=NULL) +
   theme_gpa()
@@ -248,52 +185,18 @@ fig.save.cairo(fig.by.creator, filename="figure-3-gpas-by-creator",
 
 
 #' ## Figure 4: Country of GPA source headquarters.
-countries <- tribble(
-  ~country,                       ~country_clean,             ~ ISO3,
-  "Austraila",                    "Other developed nations",  "AUS",
-  "Australia/India",              "Other developed nations",  "AUS",
-  "Austria",                      "Europe",                   "AUT",
-  "Belgium",                      "Europe",                   "BEL",
-  "Canada",                       "Other developed nations",  "CAN",
-  "Ethiopia",                     "Global South",             "ETH",
-  "Fiji",                         "Global South",             "FJI",
-  "France",                       "Europe",                   "FRA",
-  "France/ USA",                  "Europe",                   "FRA",
-  "Germany",                      "Europe",                   "DEU",
-  "Holland",                      "Europe",                   "NLD",
-  "international collaboration",  "Other developed nations",  NA,
-  "Italy",                        "Europe",                   "ITA",
-  "Lithuania",                    "Europe",                   "LTU",
-  "Netherlands",                  "Europe",                   "NLD",
-  "Phillippines",                 "Global South",             "PHL",
-  "Singapore",                    "Global South",             "SGP",
-  "South Korea",                  "Other developed nations",  "KOR",
-  "Spain",                        "Europe",                   "ESP",
-  "Switzerland",                  "Europe",                   "CHE",
-  "Uk",                           "United Kingdom",           "GBR",
-  "UK",                           "United Kingdom",           "GBR",
-  "United Kingdom",               "United Kingdom",           "GBR",
-  "United States",                "United States",            "USA",
-  "Unknown",                      "Unknown",                  NA,
-  "Uruguay",                      "Global South",             "URY",
-  "USA",                          "United States",            "USA"
-)
-
 gpa.countries <- gpa.data.clean %>%
-  # Bring in clean and consolidated country names
-  left_join(countries, by=c("country of origin" = "country")) %>%
-  # Get a count of each creating country
-  group_by(country_clean) %>%
+  group_by(country_collapsed) %>%
   summarise(num = n()) %>%
-  filter(!is.na(country_clean), country_clean != "Unknown") %>%
+  filter(!is.na(country_collapsed), country_collapsed != "Unknown") %>%
   arrange(num) %>%
-  mutate(country_clean = fct_inorder(country_clean))
+  mutate(country_collapsed = fct_inorder(country_collapsed))
 
 #' *Source: Authors' database.*
 #' 
 #' N = `r sum(gpa.countries$num)`.
 #' 
-fig.by.country <- ggplot(gpa.countries, aes(x=num, y=country_clean)) +
+fig.by.country <- ggplot(gpa.countries, aes(x=num, y=country_collapsed)) +
   geom_barh(stat="identity") +
   labs(x=NULL, y=NULL) +
   theme_gpa()
@@ -328,9 +231,6 @@ countries.ggmap <- fortify(countries.robinson, region="iso_a3") %>%
 possible.countries <- data_frame(ISO3 = unique(as.character(countries.ggmap$id)))
 
 gpa.countries.map <- gpa.data.clean %>%
-  # Bring in clean and consolidated country names
-  left_join(countries, by=c("country of origin" = "country")) %>%
-  # Get a count of each creating country
   group_by(ISO3) %>%
   summarise(num = n()) %>%
   filter(!is.na(ISO3)) %>%

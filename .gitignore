@@ -12,5 +12,6 @@ Output/*
 # Graphics (for now)
 Graphics/*
 
-# Data (for now)
-Data/*
+# Data
+Data/*.xls*
+Data/map_data/*
