@@ -4,6 +4,12 @@
 #' date: "`r format(Sys.time(), '%B %e, %Y')`"
 #' ---
 
+#' ## Data and code
+#' 
+#' Replication data and code available at
+#' [GitHub](https://github.com/andrewheiss/global_assessment_power).
+#' 
+
 #+ message=FALSE
 library(tidyverse)
 library(forcats)
