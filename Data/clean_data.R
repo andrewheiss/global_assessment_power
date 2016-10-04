@@ -16,6 +16,7 @@ gpa.data.raw <- read_excel(file.path(PROJHOME, "Data", "masterdata1.1.xlsx"),
 # Only use the first 30 columns. Need to use [,] indexing because dplyr::select
 # chokes on all the duplicated NA column names
 gpa.data.clean <- gpa.data.raw[, 2:30] %>%
+  filter(!is.na(name)) %>%
   mutate(gpa_id = row_number())
 
 

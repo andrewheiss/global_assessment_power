@@ -156,52 +156,50 @@ gpa_id,gpa_name,website,start_year,active,subject_area,subject_collapsed,creator
 153,Index of Social Vulnerability to Climate Change,http://www.tyndall.ac.uk/content/creating-index-social-vulnerability-climate-change-africa,2004,0,Social,Social,Tyndall Centre for Climate Change Research,3,NGO,NGO,United Kingdom,United Kingdom,GBR
 154,Global Civil Society Index,NA,2002,0,Social,Social,The Centre for the Study of Global Governance – London School of Economics,1,University,University,United Kingdom,United Kingdom,GBR
 155,Happy Planet Index,http://www.happyplanetindex.org/data/,2006,1,Social,Social,The New Economics Foundation,3,NGO,NGO,United Kingdom,United Kingdom,GBR
-156,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA
-157,NA,NA,NA,1,NA,NA,NA,NA,NA,NA,NA,NA,NA
-158,Mother’s Index,http://www.savethechildren.org/site/c.8rKLIXMGIpI4E/b.8585863/k.9F31/State_of_the_Worlds_Mothers.htm?msource=wenlpstw0513,2000,1,Social,Social,Save the Children,3,NGO,NGO,United Kingdom,United Kingdom,GBR
-159,Global Barometer of Hope and Happiness ,http://www.wingia.com/en/services/end_of_year_survey/global_results/7/33/,1977,1,Social,Social,WIN/gallup international,4,Private,Private,Switzerland,Europe,CHE
-160,Eden Asia Happiness Index ,http://www.edenstrategyinstitute.com/happy,2013,1,Social,Social,Eden strategy Institute,4,Private,Private,Singapore,Global South,SGP
-161,Child Well-being in Rich Countries,http://www.unicef-irc.org/publications/pdf/rc11_eng.pdf,2000,1,Social,Social,UNICEF,5,IGO,IGO,Italy,Europe,ITA
-162,Social Justice Index ,http://www.sgi-network.org/pdf/SGI11_Social_Justice_OECD.pdf,2012,1,Social,Social, Bertelsmann Foundation,3,NGO,NGO,Germany,Europe,DEU
-163,Happy Income Index,http://www.wiwi.uni-muenster.de/cawm/forschen/Download/Diskbeitraege/DP_15_Happy_Income_and_Happy_Life_Years.pdf,2009,0,Social,Social,Univeristy of Munster,1,University,University,Germany,Europe,DEU
-164,Rainbow Europe Map and Index,http://www.ilga-europe.org/home/publications/reports_and_other_materials/rainbow_europe,2009,1,Social,Social,Rainbow Europe,3,NGO,NGO,Belgium,Europe,BEL
-165,Active Ageing Index ,http://www.euro.centre.org/data/1363275126_21733.pdf,2012,1,Social,Social,European Centere for Social Policy and Research,5,IGO,IGO,Austria,Europe,AUT
-166,Global Slavery Index,http://www.globalslaveryindex.org/report/?download,2013,1,Social,Social,Walk Free Foundation ,3,NGO,NGO,Australia,Other developed nations,AUS
-167,Global AgeWatch Index,http://www.helpage.org/global-agewatch/,2013,1,Social,Social,HelpAge International,3,NGO,NGO,United Kingdom,United Kingdom,GBR
-168,Crony- Capitalism Index,http://www.economist.com/news/international/21599041-countries-where-politically-connected-businessmen-are-most-likely-prosper-planet,2014,1,"Social, Economic, Governance","Social, Economic, Governance",The Economist,4,Private,Private,USA,United States,USA
-169,Social Watch Scorecard,http://www.socialwatch.org/node/11939,1999,0,"Social, Development","Social, Development",Social Watch,3,NGO,NGO,Uruguay,Global South,URY
-170,"The African Report on Child Wellbeing/ the Child Friendliness Index
+156,Mother’s Index,http://www.savethechildren.org/site/c.8rKLIXMGIpI4E/b.8585863/k.9F31/State_of_the_Worlds_Mothers.htm?msource=wenlpstw0513,2000,1,Social,Social,Save the Children,3,NGO,NGO,United Kingdom,United Kingdom,GBR
+157,Global Barometer of Hope and Happiness ,http://www.wingia.com/en/services/end_of_year_survey/global_results/7/33/,1977,1,Social,Social,WIN/gallup international,4,Private,Private,Switzerland,Europe,CHE
+158,Eden Asia Happiness Index ,http://www.edenstrategyinstitute.com/happy,2013,1,Social,Social,Eden strategy Institute,4,Private,Private,Singapore,Global South,SGP
+159,Child Well-being in Rich Countries,http://www.unicef-irc.org/publications/pdf/rc11_eng.pdf,2000,1,Social,Social,UNICEF,5,IGO,IGO,Italy,Europe,ITA
+160,Social Justice Index ,http://www.sgi-network.org/pdf/SGI11_Social_Justice_OECD.pdf,2012,1,Social,Social, Bertelsmann Foundation,3,NGO,NGO,Germany,Europe,DEU
+161,Happy Income Index,http://www.wiwi.uni-muenster.de/cawm/forschen/Download/Diskbeitraege/DP_15_Happy_Income_and_Happy_Life_Years.pdf,2009,0,Social,Social,Univeristy of Munster,1,University,University,Germany,Europe,DEU
+162,Rainbow Europe Map and Index,http://www.ilga-europe.org/home/publications/reports_and_other_materials/rainbow_europe,2009,1,Social,Social,Rainbow Europe,3,NGO,NGO,Belgium,Europe,BEL
+163,Active Ageing Index ,http://www.euro.centre.org/data/1363275126_21733.pdf,2012,1,Social,Social,European Centere for Social Policy and Research,5,IGO,IGO,Austria,Europe,AUT
+164,Global Slavery Index,http://www.globalslaveryindex.org/report/?download,2013,1,Social,Social,Walk Free Foundation ,3,NGO,NGO,Australia,Other developed nations,AUS
+165,Global AgeWatch Index,http://www.helpage.org/global-agewatch/,2013,1,Social,Social,HelpAge International,3,NGO,NGO,United Kingdom,United Kingdom,GBR
+166,Crony- Capitalism Index,http://www.economist.com/news/international/21599041-countries-where-politically-connected-businessmen-are-most-likely-prosper-planet,2014,1,"Social, Economic, Governance","Social, Economic, Governance",The Economist,4,Private,Private,USA,United States,USA
+167,Social Watch Scorecard,http://www.socialwatch.org/node/11939,1999,0,"Social, Development","Social, Development",Social Watch,3,NGO,NGO,Uruguay,Global South,URY
+168,"The African Report on Child Wellbeing/ the Child Friendliness Index
 ",http://www.awepa.org/wp-content/uploads/2013/12/ARCW2013-English.pdf,2008,1,"Social, Development","Social, Development",African Child Policy Forum,3,NGO,NGO,Ethiopia,Global South,ETH
-171,OECD Better Life Index,http://www.oecdbetterlifeindex.org/,2011,1,"Social, Economic","Social, Economic",OECD,5,IGO,IGO,USA,United States,USA
-172,OECD Social Institutions and Gender Index,http://genderindex.org/,2009,1,"Social, Gender","Social, Human Rights",OECD,5,IGO,IGO,USA,United States,USA
-173,Under Five Mortality Rank,http://www.unicef.org/sowc2013/files/SWCR2013_ENG_Lo_res_24_Apr_2013.pdf,1996,1,"Social, Health","Social, Development",UNICEF,5,IGO,IGO,USA,United States,USA
-174,Religious freedom report,http://www.state.gov/j/drl/rls/irf/,2001,1,"Social, Religion","Social, Human Rights",US Department of State,3,NGO,NGO,USA,United States,USA
-175,Global Hunger Index,http://www.ifpri.org/sites/default/files/publications/ghi12.pdf,1990,1,"Social, Development","Social, Development",International Food Policy Research Institute (IFPRI) ,3,NGO,NGO,USA,United States,USA
-176,Assessing the Achievement of the Millennium Development Goals,http://www.undp.org/content/undp/en/home/librarypage/mdg/mdg-reports.html,2002,1,"Social, Development","Social, Development",World Bank/UNDP,5,IGO,IGO,USA,United States,USA
-177,Media Sustainability Index: Europe/ Eurasia,http://www.irex.org/project/media-sustainability-index-msi,2000,1,"Social, Development","Social, Development",International Research and Exchanges Board/ USaid,8,NGO/country agency,Overlapping or unknown,USA,United States,USA
-178,Media Sustainability Index: Africa,http://www.irex.org/project/media-sustainability-index-msi,2006,1,"Social, Development","Social, Development",International Research and Exchanges Board/ USaid,8,NGO/country agency,Overlapping or unknown,USA,United States,USA
-179,Media Sustainability Index: Middle East,http://www.irex.org/project/media-sustainability-index-msi,2005,1,"Social, Development","Social, Development",International Research and Exchanges Board/ USaid,8,NGO/country agency,Overlapping or unknown,USA,United States,USA
-180,Global Food Security Index,http://foodsecurityindex.eiu.com/Index,2012,1,"Social, Development","Social, Development",The Economist,4,Private,Private,USA,United States,USA
-181,Basic Capabilities Index,http://www.socialwatch.org/taxonomy/term/523,2007,1,"Social, Development","Social, Development",Social Watch,3,NGO,NGO,Uruguay,Global South,URY
-182,Digital Economy Ranking,http://unpan1.un.org/intradoc/groups/public/documents/APCITY/UNPAN010005.pdf,2002,0,"Social, Development","Social, Development",The Economist/IBM,4,Private,Private,United States,United States,USA
-183,Hunger and Nutrition Commitment Index,http://opendocs.ids.ac.uk/opendocs/bitstream/handle/123456789/2955/ER25%20Final%20Online.pdf?sequence=1_source=hanci,2012,1,"Social, Development","Social, Development",Insitute of Devlopment Studies,3,NGO,NGO,United Kingdom,United Kingdom,GBR
-184,Child Development Index,http://www.savethechildren.org.uk/sites/default/files/docs/child-development-index.pdf,2008,1,"Social, Development, Health","Social, Development, Development",Save the Children,3,NGO,NGO,United Kingdom,United Kingdom,GBR
-185,Multidimensional Poverty Index,http://hdr.undp.org/en/statistics/mpi,2010,1,"Social, Development, Economic","Social, Development, Economic",United Nations,5,IGO,IGO,USA,United States,USA
-186,Innovation Capacity Index,http://www.isc.hbs.edu/Innov_9211.pdf,2001,0,"Social, Economic","Social, Economic",World Economic Forum,3,NGO,NGO,United States,United States,USA
-187,Environment & Gender Index,https://static.squarespace.com/static/5149cacfe4b0de06a6f03976/t/528a81a2e4b086fe2a3ba5ff/1384808866294/The%20Environment%20and%20Gender%20Index%20-%202013%20Pilot%20-,2013,1,"Social, Environment","Social, Environment",Envirnmental Union for the Consevation of Nature,3,NGO,NGO,USA,United States,USA
-188,Alternative Country-Risk Index,http://www.choike.org/nuevo_eng/informes/2192.html,2004,0,"Social, Governance, Economic","Social, Governance, Economic","Latin American Centre for Social Ecology (CLAES) and D3E (Development, Economy, Ecology, Equity – Latin America)",3,NGO,NGO,Uruguay,Global South,URY
-189,E-Government Index,http://www.worldmarketsanalysis.com/pdf/e-govreport.pdf,2001,0,"Social, Technology","Social, Trade & Finance",WMRC/ Brown University,6,NGO/university,Overlapping or unknown,United States,United States,USA
-190,Space Competitiveness Index,http://spaceref.biz/2012/08/futron-releases-2012-space-competitiveness-index.html,2008,1,Technology,Trade & Finance,Futron Corperation,4,Private,Private,USA,United States,USA
-191,High Tech Indicators (HTI),http://www.au.af.mil/au/awc/awcgate/nsf/nsf_hi_tech_indicators_33_nations.pdf,1987,0,Technology,Trade & Finance,Technology Policy and Assessment Center - Georgia Institute of Technology,1,University,University,United States,United States,USA
-192,Web Index,https://thewebindex.org/,2012,1,Technology,Trade & Finance,World Wide Web Foundation,3,NGO,NGO,Switzerland,Europe,CHE
-193,IT Industry Competitiveness Index ,http://globalindex11.bsa.org/,2009,1,"Technology, Economic","Trade & Finance, Economic",The Economist,4,Private,Private,USA,United States,USA
-194,E- Government Development Index,http://unpan3.un.org/egovkb/,2004,1,"Technology, Development","Trade & Finance, Development",United Nations/ UNPAN,5,IGO,IGO,USA,United States,USA
-195,UN's Technology Achievement Index,http://unpan1.un.org/intradoc/groups/public/documents/apcity/unpan014340.pdf,2002,0,"Technology, Development","Trade & Finance, Development",UN,5,IGO,IGO,NA,NA,NA
-196,Travel and Tourism Competitiveness Report,http://www3.weforum.org/docs/WEF_TravelTourismCompetitiveness_Report_2011.pdf,2007,1,Tourism,Development,World Economic Forum,3,NGO,NGO,Switzerland,Europe,CHE
-197,“Special 301” Report,http://www.ustr.gov/about-us/press-office/reports-and-publications/2013/2013-special-301-report,1989,1,"Trade, Intellectual Property Rights","Trade & Finance, Legal",Office of United States Trade Representative,3,NGO,NGO,USA,United States,USA
-198,The Enabling Trade Index ,http://www3.weforum.org/docs/WEF_GlobalEnablingTrade_Report_2014.pdf,2008,1,"Trade, Intellectual Property Rights","Trade & Finance, Legal",Word Economic Forum,5,IGO,IGO,NA,NA,NA
-199,Lisbon Scorecard,http://www.ceps.eu/content/1noth-lisbon-scorecard-measures-progress-road-2020-ceps-membership-meeting,2000,0,NA,NA,Center for European Reform,3,NGO,NGO,United Kingdom,United Kingdom,GBR
-200,Economic freedom of the World,http://www.freetheworld.com,1995,1,NA,NA,Fraser Institute,NA,NA,NA,Canada,Other developed nations,CAN
-201,index of human freedom,http://www.freetheworld.com/humanFreedom.php,2012,1,NA,NA,Fraser Institute,NA,NA,NA,NA,NA,NA
-202,Nuclear materials Security Index,http://ntiindex.org,2014,1,NA,NA,Nuclear Threat Initiative (NTI) and the Economist intelligence Unit,NA,NA,NA,NA,NA,NA
-203,Women's empowerment agriculture index,http://www.ifpri.org/publication/womens-empowerment-agriculture-index,2012,1,NA,NA,International Food Policy Research Institute (IFPRI) ,NA,NA,NA,NA,NA,NA
+169,OECD Better Life Index,http://www.oecdbetterlifeindex.org/,2011,1,"Social, Economic","Social, Economic",OECD,5,IGO,IGO,USA,United States,USA
+170,OECD Social Institutions and Gender Index,http://genderindex.org/,2009,1,"Social, Gender","Social, Human Rights",OECD,5,IGO,IGO,USA,United States,USA
+171,Under Five Mortality Rank,http://www.unicef.org/sowc2013/files/SWCR2013_ENG_Lo_res_24_Apr_2013.pdf,1996,1,"Social, Health","Social, Development",UNICEF,5,IGO,IGO,USA,United States,USA
+172,Religious freedom report,http://www.state.gov/j/drl/rls/irf/,2001,1,"Social, Religion","Social, Human Rights",US Department of State,3,NGO,NGO,USA,United States,USA
+173,Global Hunger Index,http://www.ifpri.org/sites/default/files/publications/ghi12.pdf,1990,1,"Social, Development","Social, Development",International Food Policy Research Institute (IFPRI) ,3,NGO,NGO,USA,United States,USA
+174,Assessing the Achievement of the Millennium Development Goals,http://www.undp.org/content/undp/en/home/librarypage/mdg/mdg-reports.html,2002,1,"Social, Development","Social, Development",World Bank/UNDP,5,IGO,IGO,USA,United States,USA
+175,Media Sustainability Index: Europe/ Eurasia,http://www.irex.org/project/media-sustainability-index-msi,2000,1,"Social, Development","Social, Development",International Research and Exchanges Board/ USaid,8,NGO/country agency,Overlapping or unknown,USA,United States,USA
+176,Media Sustainability Index: Africa,http://www.irex.org/project/media-sustainability-index-msi,2006,1,"Social, Development","Social, Development",International Research and Exchanges Board/ USaid,8,NGO/country agency,Overlapping or unknown,USA,United States,USA
+177,Media Sustainability Index: Middle East,http://www.irex.org/project/media-sustainability-index-msi,2005,1,"Social, Development","Social, Development",International Research and Exchanges Board/ USaid,8,NGO/country agency,Overlapping or unknown,USA,United States,USA
+178,Global Food Security Index,http://foodsecurityindex.eiu.com/Index,2012,1,"Social, Development","Social, Development",The Economist,4,Private,Private,USA,United States,USA
+179,Basic Capabilities Index,http://www.socialwatch.org/taxonomy/term/523,2007,1,"Social, Development","Social, Development",Social Watch,3,NGO,NGO,Uruguay,Global South,URY
+180,Digital Economy Ranking,http://unpan1.un.org/intradoc/groups/public/documents/APCITY/UNPAN010005.pdf,2002,0,"Social, Development","Social, Development",The Economist/IBM,4,Private,Private,United States,United States,USA
+181,Hunger and Nutrition Commitment Index,http://opendocs.ids.ac.uk/opendocs/bitstream/handle/123456789/2955/ER25%20Final%20Online.pdf?sequence=1_source=hanci,2012,1,"Social, Development","Social, Development",Insitute of Devlopment Studies,3,NGO,NGO,United Kingdom,United Kingdom,GBR
+182,Child Development Index,http://www.savethechildren.org.uk/sites/default/files/docs/child-development-index.pdf,2008,1,"Social, Development, Health","Social, Development, Development",Save the Children,3,NGO,NGO,United Kingdom,United Kingdom,GBR
+183,Multidimensional Poverty Index,http://hdr.undp.org/en/statistics/mpi,2010,1,"Social, Development, Economic","Social, Development, Economic",United Nations,5,IGO,IGO,USA,United States,USA
+184,Innovation Capacity Index,http://www.isc.hbs.edu/Innov_9211.pdf,2001,0,"Social, Economic","Social, Economic",World Economic Forum,3,NGO,NGO,United States,United States,USA
+185,Environment & Gender Index,https://static.squarespace.com/static/5149cacfe4b0de06a6f03976/t/528a81a2e4b086fe2a3ba5ff/1384808866294/The%20Environment%20and%20Gender%20Index%20-%202013%20Pilot%20-,2013,1,"Social, Environment","Social, Environment",Envirnmental Union for the Consevation of Nature,3,NGO,NGO,USA,United States,USA
+186,Alternative Country-Risk Index,http://www.choike.org/nuevo_eng/informes/2192.html,2004,0,"Social, Governance, Economic","Social, Governance, Economic","Latin American Centre for Social Ecology (CLAES) and D3E (Development, Economy, Ecology, Equity – Latin America)",3,NGO,NGO,Uruguay,Global South,URY
+187,E-Government Index,http://www.worldmarketsanalysis.com/pdf/e-govreport.pdf,2001,0,"Social, Technology","Social, Trade & Finance",WMRC/ Brown University,6,NGO/university,Overlapping or unknown,United States,United States,USA
+188,Space Competitiveness Index,http://spaceref.biz/2012/08/futron-releases-2012-space-competitiveness-index.html,2008,1,Technology,Trade & Finance,Futron Corperation,4,Private,Private,USA,United States,USA
+189,High Tech Indicators (HTI),http://www.au.af.mil/au/awc/awcgate/nsf/nsf_hi_tech_indicators_33_nations.pdf,1987,0,Technology,Trade & Finance,Technology Policy and Assessment Center - Georgia Institute of Technology,1,University,University,United States,United States,USA
+190,Web Index,https://thewebindex.org/,2012,1,Technology,Trade & Finance,World Wide Web Foundation,3,NGO,NGO,Switzerland,Europe,CHE
+191,IT Industry Competitiveness Index ,http://globalindex11.bsa.org/,2009,1,"Technology, Economic","Trade & Finance, Economic",The Economist,4,Private,Private,USA,United States,USA
+192,E- Government Development Index,http://unpan3.un.org/egovkb/,2004,1,"Technology, Development","Trade & Finance, Development",United Nations/ UNPAN,5,IGO,IGO,USA,United States,USA
+193,UN's Technology Achievement Index,http://unpan1.un.org/intradoc/groups/public/documents/apcity/unpan014340.pdf,2002,0,"Technology, Development","Trade & Finance, Development",UN,5,IGO,IGO,NA,NA,NA
+194,Travel and Tourism Competitiveness Report,http://www3.weforum.org/docs/WEF_TravelTourismCompetitiveness_Report_2011.pdf,2007,1,Tourism,Development,World Economic Forum,3,NGO,NGO,Switzerland,Europe,CHE
+195,“Special 301” Report,http://www.ustr.gov/about-us/press-office/reports-and-publications/2013/2013-special-301-report,1989,1,"Trade, Intellectual Property Rights","Trade & Finance, Legal",Office of United States Trade Representative,3,NGO,NGO,USA,United States,USA
+196,The Enabling Trade Index ,http://www3.weforum.org/docs/WEF_GlobalEnablingTrade_Report_2014.pdf,2008,1,"Trade, Intellectual Property Rights","Trade & Finance, Legal",Word Economic Forum,5,IGO,IGO,NA,NA,NA
+197,Lisbon Scorecard,http://www.ceps.eu/content/1noth-lisbon-scorecard-measures-progress-road-2020-ceps-membership-meeting,2000,0,NA,NA,Center for European Reform,3,NGO,NGO,United Kingdom,United Kingdom,GBR
+198,Economic freedom of the World,http://www.freetheworld.com,1995,1,NA,NA,Fraser Institute,NA,NA,NA,Canada,Other developed nations,CAN
+199,index of human freedom,http://www.freetheworld.com/humanFreedom.php,2012,1,NA,NA,Fraser Institute,NA,NA,NA,NA,NA,NA
+200,Nuclear materials Security Index,http://ntiindex.org,2014,1,NA,NA,Nuclear Threat Initiative (NTI) and the Economist intelligence Unit,NA,NA,NA,NA,NA,NA
+201,Women's empowerment agriculture index,http://www.ifpri.org/publication/womens-empowerment-agriculture-index,2012,1,NA,NA,International Food Policy Research Institute (IFPRI) ,NA,NA,NA,NA,NA,NA
