@@ -181,6 +181,8 @@ gpa.creators <- gpa.data.clean %>%
   group_by(creator_collapsed) %>%
   summarise(num = n()) %>%
   arrange(num) %>%
+  mutate(creator_collapsed = str_replace(creator_collapsed, 
+                                         "ping or", "ping\nor")) %>%
   mutate(creator_collapsed = fct_inorder(creator_collapsed))
 
 creator.denominator <- gpa.data.clean %>% 
