@@ -12,7 +12,7 @@ gpa_id,gpa_name,website,start_year,active,subject_area,subject_collapsed,creator
 11,Global Opportunity Index,http://www.globalopportunityindex.org/?ref=MI,2007,1,Development,Development,Milken Institute,3,NGO,NGO,USA,United States,USA
 12,Gender Inequality Index,http://hdr.undp.org/en/statistics/gii,2000,1,Development,Development,United Nations Development Program (UNDP),5,IGO,IGO,USA,United States,USA
 13,Quality of Official Development Assistance,http://www.cgdev.org/publication/quality-official-development-assistance-assessment-report,2010,1,Development,Development,Center for Global Development,3,NGO,NGO,USA,United States,USA
-14,Disaster Risk Index,: http://www.undp.org/bcpr/disred/english/wedo/rrt/dri.htm,2004,0,Development,Development,UNDP,5,IGO,IGO,United States,United States,USA
+14,Disaster Risk Index,http://www.undp.org/bcpr/disred/english/wedo/rrt/dri.htm,2004,0,Development,Development,UNDP,5,IGO,IGO,United States,United States,USA
 15,Sustainable Society Index,http://www.ssfindex.com/data/,2006,1,Development,Development,Sustainable Society Foundation,3,NGO,NGO,Netherlands,Europe,NLD
 16,Global Creativity Index,http://martinprosperity.org/media/GCI-Report-reduced-Oct%202011.pdf,2004,1,Development,Development,Martin Prosparity Institue,1,University,University,Canada,Other developed nations,CAN
 17,Index of Human Progress,http://www.fraserinstitute.org/research-news/display.aspx?id=13201,2001,0,Development,Development,Fraser Institute,3,NGO,NGO,Canada,Other developed nations,CAN

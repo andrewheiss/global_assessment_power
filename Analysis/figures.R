@@ -64,7 +64,8 @@ fig.save.cairo <- function(fig, filepath=file.path(PROJHOME, "Output"),
 
 # Load clean data
 #+ message=FALSE
-gpa.data.clean <- read_csv(file.path(PROJHOME, "Data", "kelley_simmons_gpa_2015-10-03.csv"))
+gpa.data.clean <- read_csv(file.path(PROJHOME, "Data",
+                                     "kelley_simmons_gpa_2015-10-03.csv"))
 
 
 #' ## Figure 1: Cumulative number of GPAs.
