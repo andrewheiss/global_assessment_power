@@ -43,9 +43,9 @@ theme_gpa <- function(base_size=9, base_family="Clear Sans Light") {
           axis.title=element_text(size=rel(0.8), family="Clear Sans", face="bold"),
           strip.text=element_text(size=rel(1), family="Clear Sans", face="bold"),
           strip.background=element_rect(fill="#ffffff", colour=NA),
-          panel.margin.y=unit(1.5, "lines"),
+          panel.spacing.y=unit(1.5, "lines"),
           legend.key=element_blank(),
-          legend.margin=unit(0.2, "lines"))
+          legend.spacing=unit(0.2, "lines"))
   
   ret
 }
@@ -71,7 +71,7 @@ fig.save.cairo <- function(fig, filepath=file.path(PROJHOME, "Output"),
 # Load clean data
 #+ message=FALSE
 gpa.data.clean <- read_csv(file.path(PROJHOME, "Data",
-                                     "kelley_simmons_gpa_2015-10-03.csv"))
+                                     "kelley_simmons_gpa_2015-10-04.csv"))
 
 
 #' ## Figure 1: Cumulative number of GPAs.
@@ -121,11 +121,11 @@ gpa.cum.plot <- gpa.data.clean %>%
 #' our criteria and appear to be regularly updated as of 2012.
 #' 
 fig.cum.gpas <- ggplot(gpa.cum.plot, aes(x=chunk_name, y=plot_value, fill=active)) +
-  geom_bar(stat="identity", position="stack") +
+  geom_col(position="stack") +
   scale_fill_manual(values=c("grey70", "grey30"), name=NULL) +
   labs(x=NULL, y=NULL) +
   theme_gpa() + theme(legend.key.size=unit(0.65, "lines"),
-                      legend.key=element_blank(), legend.margin=unit(0.25, "lines"))
+                      legend.key=element_blank(), legend.spacing=unit(0.25, "lines"))
 fig.cum.gpas
 
 fig.save.cairo(fig.cum.gpas, filename="figure-1-cumulative-gpas",
@@ -144,6 +144,10 @@ gpa.issues <- gpa.data.clean %>%
   arrange(issue_count) %>%
   mutate(subject_collapsed = fct_inorder(subject_collapsed))
 
+issue.denominator <- gpa.data.clean %>%
+  filter(active == 1, !is.na(subject_collapsed)) %>%
+  nrow
+
 #' *Source: Authors' database.* 
 #' 
 #' Note: Includes only "active" GPAs as of 2012; excludes defunct cases. Note
@@ -157,10 +161,12 @@ gpa.issues <- gpa.data.clean %>%
 #' rights, press freedom, religion, gender; legal = legal, intellectual 
 #' property rights, privacy.
 #' 
-#' N = `r nrow(gpa.data.clean)` unique GPAs.
+#' N = `r issue.denominator` active GPAs.
 #' 
 fig.by.issue <- ggplot(gpa.issues, aes(x=issue_count, y=subject_collapsed)) + 
   geom_barh(stat="identity") + 
+  scale_x_continuous(sec.axis = sec_axis(~ . / issue.denominator,
+                                         labels=scales::percent)) +
   labs(x=NULL, y=NULL) +
   theme_gpa()
 fig.by.issue
@@ -177,12 +183,18 @@ gpa.creators <- gpa.data.clean %>%
   arrange(num) %>%
   mutate(creator_collapsed = fct_inorder(creator_collapsed))
 
+creator.denominator <- gpa.data.clean %>% 
+  filter(!is.na(creator_collapsed)) %>% 
+  nrow
+
 #' *Source: Authors' database.*
 #' 
-#' N = `r sum(gpa.creators$num)`.
+#' N = `r creator.denominator`.
 #' 
 fig.by.creator <- ggplot(gpa.creators, aes(x=num, y=creator_collapsed)) +
   geom_barh(stat="identity") +
+  scale_x_continuous(sec.axis = sec_axis(~ . / creator.denominator,
+                                         labels=scales::percent)) +
   labs(x=NULL, y=NULL) +
   theme_gpa()
 fig.by.creator
@@ -199,12 +211,16 @@ gpa.countries <- gpa.data.clean %>%
   arrange(num) %>%
   mutate(country_collapsed = fct_inorder(country_collapsed))
 
+country.denominator <- sum(gpa.countries$num)
+
 #' *Source: Authors' database.*
 #' 
-#' N = `r sum(gpa.countries$num)`.
+#' N = `r country.denominator`.
 #' 
 fig.by.country <- ggplot(gpa.countries, aes(x=num, y=country_collapsed)) +
   geom_barh(stat="identity") +
+  scale_x_continuous(sec.axis = sec_axis(~ . / country.denominator,
+                                         labels=scales::percent)) +
   labs(x=NULL, y=NULL) +
   theme_gpa()
 fig.by.country
@@ -252,9 +268,10 @@ gpa.countries.map <- gpa.data.clean %>%
 #' N = `r sum(gpa.countries.map$num.bin)` countries.
 #' 
 
+#+ warning=FALSE
 gpa.map.bin <- ggplot(gpa.countries.map, aes(fill=num.bin, map_id=ISO3)) +
   geom_map(map=countries.ggmap, size=0.15, colour="black") + 
-  expand_limits(x=countries.ggmap$long, y=countries.ggmap$lat) + 
+  expand_limits(x=countries.ggmap$long, y=countries.ggmap$lat) +
   coord_equal() +
   scale_fill_manual(values = c("white", "grey30"), guide=FALSE) + 
   theme_blank_map()
@@ -263,6 +280,7 @@ gpa.map.bin
 fig.save.cairo(gpa.map.bin, filename="figure-4-gpas-by-country-map-bin",
                width=5, height=4)
 
+#+ warning=FALSE
 gpa.map <- ggplot(gpa.countries.map, aes(fill=num.ceiling, map_id=ISO3)) +
   geom_map(map=countries.ggmap, size=0.15, colour="black") + 
   expand_limits(x=countries.ggmap$long, y=countries.ggmap$lat) + 
