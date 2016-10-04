@@ -125,7 +125,8 @@ fig.cum.gpas <- ggplot(gpa.cum.plot, aes(x=chunk_name, y=plot_value, fill=active
   scale_fill_manual(values=c("grey70", "grey30"), name=NULL) +
   labs(x=NULL, y=NULL) +
   theme_gpa() + theme(legend.key.size=unit(0.65, "lines"),
-                      legend.key=element_blank(), legend.spacing=unit(0.25, "lines"))
+                      legend.key=element_blank(), legend.spacing=unit(0.25, "lines"),
+                      panel.grid.major.x=element_blank())
 fig.cum.gpas
 
 fig.save.cairo(fig.cum.gpas, filename="figure-1-cumulative-gpas",
@@ -168,7 +169,7 @@ fig.by.issue <- ggplot(gpa.issues, aes(x=issue_count, y=subject_collapsed)) +
   scale_x_continuous(sec.axis = sec_axis(~ . / issue.denominator,
                                          labels=scales::percent)) +
   labs(x=NULL, y=NULL) +
-  theme_gpa()
+  theme_gpa() + theme(panel.grid.major.y=element_blank())
 fig.by.issue
 
 fig.save.cairo(fig.by.issue, filename="figure-2-gpas-by-issue",
@@ -198,7 +199,7 @@ fig.by.creator <- ggplot(gpa.creators, aes(x=num, y=creator_collapsed)) +
   scale_x_continuous(sec.axis = sec_axis(~ . / creator.denominator,
                                          labels=scales::percent)) +
   labs(x=NULL, y=NULL) +
-  theme_gpa()
+  theme_gpa() + theme(panel.grid.major.y=element_blank())
 fig.by.creator
 
 fig.save.cairo(fig.by.creator, filename="figure-3-gpas-by-creator",
@@ -224,7 +225,7 @@ fig.by.country <- ggplot(gpa.countries, aes(x=num, y=country_collapsed)) +
   scale_x_continuous(sec.axis = sec_axis(~ . / country.denominator,
                                          labels=scales::percent)) +
   labs(x=NULL, y=NULL) +
-  theme_gpa()
+  theme_gpa() + theme(panel.grid.major.y=element_blank())
 fig.by.country
 
 fig.save.cairo(fig.by.country, filename="figure-4-gpas-by-country",
