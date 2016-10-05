@@ -131,7 +131,7 @@ gpa_id,gpa_name,website,start_year,active,subject_area,subject_collapsed,creator
 129,Knowledge Index (KEI),http://info.worldbank.org/etools/kam2/KAM_page5.asp,1995,1,Economic,Economic,World Bank,5,IGO,IGO,USA,United States,USA
 130,KOF Index of Globalization,http://globalization.kof.ethz.ch/,2002,1,"Economic, Governance, Social","Economic, Governance, Social",KOF-Swiss Federal Institute of Technology Zurich,1,University,University,Switzerland,Europe,CHE
 131,Legatum Prosperity Index,http://www.prosperity.com/#!/publications,2010,1,Economic,Economic,Legatum Institute,4,Private,Private,United Kingdom,United Kingdom,GBR
-132,Lisbon Scorecard,http://www.ceps.eu/content/1noth-lisbon-scorecard-measures-progress-road-2020-ceps-membership-meeting,2000,0,NA,NA,Center for European Reform,3,NGO,NGO,United Kingdom,United Kingdom,GBR
+132,Lisbon Scorecard,http://www.ceps.eu/content/1noth-lisbon-scorecard-measures-progress-road-2020-ceps-membership-meeting,2000,0,Economic,Economic,Center for European Reform,3,NGO,NGO,United Kingdom,United Kingdom,GBR
 133,Logistics Performance Index,http://lpi.worldbank.org/,2007,1,"Economic, Trade","Economic, Trade & Finance",The World bank,5,IGO,IGO,USA,United States,USA
 134,Low-Carbon Competitiveness Index,http://www.vivideconomics.com/uploads/reports/g20-low-carbon-competitiveness-index-2012-update/LCCI_Index_2012_update.pdf,2009,1,Environment,Environment,Vivid Economics,4,Private,Private,United Kingdom,United Kingdom,GBR
 135,Maastricht Globalisation Index (MGI),http://pimmartens.info/research/globalisation-index/,2008,1,"Economic, Governance","Economic, Governance",Universitiet Maastritch,1,University,University,Netherlands,Europe,NLD
@@ -174,7 +174,7 @@ gpa_id,gpa_name,website,start_year,active,subject_area,subject_collapsed,creator
 171,Special 301 Report,http://www.ustr.gov/about-us/press-office/reports-and-publications/2013/2013-special-301-report,1989,1,"Trade, Intellectual Property Rights","Trade & Finance, Legal",Office of United States Trade Representative,3,NGO,NGO,USA,United States,USA
 172,State Fragility Index ,http://www.systemicpeace.org/GlobalReport2011.pdf,1995,1,Governance,Governance,Center for Systemic Peace/USaid,3,NGO,NGO,USA,United States,USA
 173,State of World Liberty Index,http://www.stateofworldliberty.org/report/,2006,0,Governance,Governance,Nick Wilson (self-published),9,Missing or other,Overlapping or unknown,USA,United States,USA
-174,Statistical Capacity Indicator,"http://web.worldbank.org/WBSITE/EXTERNAL/DATASTATISTICS/EXTWBDEBTSTA/0,,contentMDK:22284270~menuPK:9248396~pagePK:64168445~piPK:64168309~theSitePK:3561370,00.html",2004,1,Other,NA,World Bank,5,IGO,IGO,USA,United States,USA
+174,Statistical Capacity Indicator,"http://web.worldbank.org/WBSITE/EXTERNAL/DATASTATISTICS/EXTWBDEBTSTA/0,,contentMDK:22284270~menuPK:9248396~pagePK:64168445~piPK:64168309~theSitePK:3561370,00.html",2004,1,Governance,Governance,World Bank,5,IGO,IGO,USA,United States,USA
 175,Sustainable Governance Indicators,http://www.sgi-network.org/2014/,2009,1,"Governance, Environment","Governance, Environment",Bertelsmann Foundation,3,NGO,NGO,Germany,Europe,DEU
 176,Sustainable Society Index,http://www.ssfindex.com/data/,2006,1,Development,Development,Sustainable Society Foundation,3,NGO,NGO,Netherlands,Europe,NLD
 177,Tax Misery & Reform Index,http://www.forbes.com/global/2009/0413/034-tax-misery-reform-index.html,2000,0,Governance,Governance,Forbes,4,Private,Private,United States,United States,USA
@@ -189,7 +189,7 @@ gpa_id,gpa_name,website,start_year,active,subject_area,subject_collapsed,creator
 186,Travel and Tourism Competitiveness Report,http://www3.weforum.org/docs/WEF_TravelTourismCompetitiveness_Report_2011.pdf,2007,1,Tourism,Development,World Economic Forum,3,NGO,NGO,Switzerland,Europe,CHE
 187,Trends in International Mathematics and Science Study (TIMSS),http://nces.ed.gov/Timss/,1995,1,Education,Development,TIMSS and PIRLS International Study Center (Boston College) and the International Association for the Evaluation of Educational Achievement (IEA) ,6,NGO/university,Overlapping or unknown,USA,United States,USA
 188,UN World Water Development Report,http://unesdoc.unesco.org/images/0022/002257/225741E.pdf,2003,1,"Environment, Development","Environment, Development",UN,5,IGO,IGO,USA,United States,USA
-189,UN's Technology Achievement Index,http://unpan1.un.org/intradoc/groups/public/documents/apcity/unpan014340.pdf,2002,0,"Technology, Development","Trade & Finance, Development",UN,5,IGO,IGO,NA,NA,NA
+189,UN's Technology Achievement Index,http://unpan1.un.org/intradoc/groups/public/documents/apcity/unpan014340.pdf,2002,0,"Technology, Development","Trade & Finance, Development",UN,5,IGO,IGO,USA,United States,USA
 190,Under Five Mortality Rank,http://www.unicef.org/sowc2013/files/SWCR2013_ENG_Lo_res_24_Apr_2013.pdf,1996,1,"Social, Health","Social, Development",UNICEF,5,IGO,IGO,USA,United States,USA
 191,Web Index,https://thewebindex.org/,2012,1,Technology,Trade & Finance,World Wide Web Foundation,3,NGO,NGO,Switzerland,Europe,CHE
 192,Women's Economic Opportunity Index,http://www.eiu.com/Handlers/WhitepaperHandler.ashx?fi=WEO_full_report_final.pdf&mode=wp&campaignid=weoindex2012,2010,1,"Gender, Social, Economic","Human Rights, Social, Economic",The Economist,4,Private,Private,United Kingdom,United Kingdom,GBR
