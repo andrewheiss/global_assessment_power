@@ -114,11 +114,16 @@ gpa.cum.plot <- gpa.data.clean %>%
                          labels=c("Continuously in use   ", "Now defunct"),
                          ordered=TRUE))
 
+gpas.active <- gpa.data.clean %>% filter(active == 1) %>% nrow
+gpas.defunct <- gpa.data.clean %>% filter(active == 0) %>% nrow
+
 #' *Source: Authors' database.*
 #' 
 #' Note: "Now defunct" denotes GPAs that appeared to be actively updated in
 #' that year but were discontinued. Light grey bars represent GPAs that meet
 #' our criteria and appear to be regularly updated as of 2012.
+#' 
+#' N = `r gpas.active` active GPAs; `r gpas.defunct` defunct GPAs.
 #' 
 fig.cum.gpas <- ggplot(gpa.cum.plot, aes(x=chunk_name, y=plot_value, fill=active)) +
   geom_col(position="stack") +
