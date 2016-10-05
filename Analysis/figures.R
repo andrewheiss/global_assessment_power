@@ -21,18 +21,19 @@ library(rgdal)
 
 
 # Useful functions
-theme_gpa <- function(base_size=9, base_family="Clear Sans Light") {
+theme_gpa <- function(base_size=10, base_family="Clear Sans") {
   update_geom_defaults("bar", list(fill = "grey30"))
   update_geom_defaults("line", list(colour = "grey30"))
-  update_geom_defaults("label", list(family="Clear Sans Light"))
-  update_geom_defaults("text", list(family="Clear Sans Light"))
+  update_geom_defaults("label", list(family="Clear Sans"))
+  update_geom_defaults("text", list(family="Clear Sans"))
   ret <- theme_bw(base_size, base_family) + 
     theme(panel.background = element_rect(fill="#ffffff", colour=NA),
           axis.title.y = element_text(margin = margin(r = 10)),
           axis.title.x = element_text(margin = margin(t = 10)),
+          axis.text = element_text(colour="black"),
           title=element_text(vjust=1.2, family="Clear Sans", face="bold"),
-          plot.subtitle=element_text(family="Clear Sans Light"),
-          plot.caption=element_text(family="Clear Sans Light",
+          plot.subtitle=element_text(family="Clear Sans"),
+          plot.caption=element_text(family="Clear Sans",
                                     size=rel(0.8), colour="grey70"),
           panel.border = element_blank(), 
           axis.line=element_line(colour="grey50", size=0.2),
@@ -50,7 +51,7 @@ theme_gpa <- function(base_size=9, base_family="Clear Sans Light") {
   ret
 }
 
-theme_blank_map <- function(base_size=9, base_family="Clear Sans Light") {
+theme_blank_map <- function(base_size=9.5, base_family="Clear Sans") {
   ret <- theme_bw(base_size, base_family) + 
     theme(panel.background = element_rect(fill="#ffffff", colour=NA),
           panel.border=element_blank(), axis.line=element_blank(),
@@ -125,13 +126,14 @@ gpas.defunct <- gpa.data.clean %>% filter(active == 0) %>% nrow
 #' 
 #' N = `r gpas.active` active GPAs; `r gpas.defunct` defunct GPAs.
 #' 
+#+ fig.width=5, fig.height=2.5
 fig.cum.gpas <- ggplot(gpa.cum.plot, aes(x=chunk_name, y=plot_value, fill=active)) +
   geom_col(position="stack") +
   scale_fill_manual(values=c("grey70", "grey30"), name=NULL) +
   labs(x=NULL, y=NULL) +
-  theme_gpa() + theme(legend.key.size=unit(0.65, "lines"),
-                      legend.key=element_blank(), legend.spacing=unit(0.25, "lines"),
-                      panel.grid.major.x=element_blank())
+  theme_gpa(9) + theme(legend.key.size=unit(0.65, "lines"),
+                       legend.key=element_blank(), legend.spacing=unit(0.25, "lines"),
+                       panel.grid.major.x=element_blank())
 fig.cum.gpas
 
 fig.save.cairo(fig.cum.gpas, filename="figure-1-cumulative-gpas",
@@ -169,6 +171,7 @@ issue.denominator <- gpa.data.clean %>%
 #' 
 #' N = `r issue.denominator` active GPAs.
 #' 
+#+ fig.width=5, fig.height=3.5
 fig.by.issue <- ggplot(gpa.issues, aes(x=issue_count, y=subject_collapsed)) + 
   geom_barh(stat="identity") + 
   scale_x_continuous(sec.axis = sec_axis(~ . / issue.denominator,
@@ -199,6 +202,7 @@ creator.denominator <- gpa.data.clean %>%
 #' 
 #' N = `r creator.denominator`.
 #' 
+#+ fig.width=5, fig.height=2.5
 fig.by.creator <- ggplot(gpa.creators, aes(x=num, y=creator_collapsed)) +
   geom_barh(stat="identity") +
   scale_x_continuous(sec.axis = sec_axis(~ . / creator.denominator,
@@ -225,6 +229,7 @@ country.denominator <- sum(gpa.countries$num)
 #' 
 #' N = `r country.denominator`.
 #' 
+#+ fig.width=5, fig.height=2.5
 fig.by.country <- ggplot(gpa.countries, aes(x=num, y=country_collapsed)) +
   geom_barh(stat="identity") +
   scale_x_continuous(sec.axis = sec_axis(~ . / country.denominator,
@@ -276,7 +281,7 @@ gpa.countries.map <- gpa.data.clean %>%
 #' N = `r sum(gpa.countries.map$num.bin)` countries.
 #' 
 
-#+ warning=FALSE
+#+ warning=FALSE, fig.width=5, fig.height=4
 gpa.map.bin <- ggplot(gpa.countries.map, aes(fill=num.bin, map_id=ISO3)) +
   geom_map(map=countries.ggmap, size=0.15, colour="black") + 
   expand_limits(x=countries.ggmap$long, y=countries.ggmap$lat) +
@@ -288,7 +293,7 @@ gpa.map.bin
 fig.save.cairo(gpa.map.bin, filename="figure-4-gpas-by-country-map-bin",
                width=5, height=4)
 
-#+ warning=FALSE
+#+ warning=FALSE, fig.width=5, fig.height=4
 gpa.map <- ggplot(gpa.countries.map, aes(fill=num.ceiling, map_id=ISO3)) +
   geom_map(map=countries.ggmap, size=0.15, colour="black") + 
   expand_limits(x=countries.ggmap$long, y=countries.ggmap$lat) + 
@@ -297,7 +302,7 @@ gpa.map <- ggplot(gpa.countries.map, aes(fill=num.ceiling, map_id=ISO3)) +
                       labels=c(paste(seq(2, 8, 2), "  "), "10+"),
                       na.value="white", name="GPAs based in country",
                       guide=guide_colourbar(ticks=FALSE, barwidth=5)) + 
-  theme_blank_map() +
+  theme_blank_map(9) +
   theme(legend.position="bottom", legend.key.size=unit(0.65, "lines"),
         strip.background=element_rect(colour="#FFFFFF", fill="#FFFFFF"))
 gpa.map
