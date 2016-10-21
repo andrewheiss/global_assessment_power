@@ -140,6 +140,59 @@ fig.save.cairo(fig.cum.gpas, filename="figure-1-cumulative-gpas",
                width=5, height=2.5)
 
 
+#' ## Figure 2 (new): Number of GPAs, by issue and creator type.
+gpa.issues.creators <- gpa.data.clean %>%
+  filter(active == 1, !is.na(subject_collapsed), !is.na(creator_collapsed),
+         creator_collapsed != "Overlapping or unknown") %>%
+  mutate(subject_collapsed = str_split(subject_collapsed, ", ")) %>%
+  unnest(subject_collapsed) %>%
+  group_by(creator_collapsed, subject_collapsed) %>%
+  summarise(num = n()) %>%
+  group_by(subject_collapsed) %>%
+  mutate(total_in_group = sum(num)) %>%
+  ungroup() %>%
+  complete(subject_collapsed, creator_collapsed, fill=list(num = 0)) %>%
+  arrange(total_in_group, num) %>%
+  mutate(creator_collapsed = fct_relevel(creator_collapsed,
+                                         c("University", "Private", "IGO", "NGO"))) %>%
+  mutate(subject_collapsed = fct_inorder(subject_collapsed))
+
+issue.creator.denominator <- gpa.data.clean %>% 
+  filter(active == 1, !is.na(creator_collapsed),
+         creator_collapsed != "Overlapping or unknown") %>% 
+  nrow
+
+#' *Source: Authors' database.* 
+#' 
+#' Note: Includes only "active" GPAs as of 2012; excludes defunct cases. Note
+#' that the total count of GPAs is larger than in Figure 1 because we have
+#' double counted cases that straddle issue areas, such as health and
+#' development. Overlapping and unknown creators are ommitted.
+#' 
+#' Several categories collapse the following subcategories: security =
+#' conflict, military; development = development, aid, health, energy, tourism,
+#' education; trade & finance = trade, financy, education; human rights = human
+#' rights, press freedom, religion, gender; legal = legal, intellectual 
+#' property rights, privacy.
+#' 
+#' N = `r issue.creator.denominator`.
+#' 
+#+ fig.width=5, fig.height=3.5
+fig.by.issue.creator <- ggplot(gpa.issues.creators,
+                               aes(x=num, y=subject_collapsed, fill=creator_collapsed)) + 
+  geom_barh(stat="identity", position=position_stackv()) + 
+  scale_x_continuous(sec.axis = sec_axis(~ . / issue.creator.denominator,
+                                         labels=scales::percent)) +
+  scale_fill_manual(values=rev(c("grey20", "grey80", "grey40", "grey60"))) +
+  guides(fill=guide_legend(reverse=TRUE, title=NULL)) +
+  labs(x=NULL, y=NULL) +
+  theme_gpa() + theme(panel.grid.major.y=element_blank())
+fig.by.issue.creator
+
+fig.save.cairo(fig.by.issue.creator, filename="figure-2-gpas-by-issue-creator",
+               width=5, height=3.5)
+
+
 #' ## Figure 2: Number of GPAs, by issue.
 gpa.issues <- gpa.data.clean %>%
   filter(active == 1, !is.na(subject_collapsed)) %>%
