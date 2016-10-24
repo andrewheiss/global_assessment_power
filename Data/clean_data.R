@@ -10,7 +10,7 @@ library(readxl)
 library(stringr)
 
 # Load and clean data
-gpa.data.raw <- read_excel(file.path(PROJHOME, "Data", "masterdata1.2.xlsx"),
+gpa.data.raw <- read_excel(file.path(PROJHOME, "Data", "masterdata1.3.xlsx"),
                            sheet="main data sheet")
 
 # Only use the first 30 columns. Need to use [,] indexing because dplyr::select
@@ -92,15 +92,15 @@ gpa.issues.clean <- gpa.issues %>%
 # Clean up creator types
 creator.types <- tribble(
   ~creator_type, ~creator_clean,        ~creator_collapsed,
-  1,             "University",          "University",
-  2,             "National government", "National government",
+  1,             "University",          "University or Private",
+  2,             "National government", "State",
   3,             "NGO",                 "NGO",
-  4,             "Private",             "Private",
+  4,             "Private",             "University or Private",
   5,             "IGO",                 "IGO",
-  6,             "NGO/university",      "Overlapping or unknown",
-  7,             "IGO/university",      "Overlapping or unknown",
-  8,             "NGO/country agency",  "Overlapping or unknown",
-  9,             "Missing or other",    "Overlapping or unknown"
+  6,             "NGO/university",      "Other",
+  7,             "IGO/university",      "Other",
+  8,             "NGO/country agency",  "Other",
+  9,             "Missing or other",    "Other"
 )
 
 gpa.creators <- gpa.data.clean %>%
@@ -162,4 +162,4 @@ gpa.data.final <- gpa.data.clean %>%
 
 write_csv(gpa.data.final,
           path=file.path(PROJHOME, "Data",
-                         "kelley_simmons_gpa_2015-10-04.csv"))
+                         "kelley_simmons_gpa_2015-10-24.csv"))
