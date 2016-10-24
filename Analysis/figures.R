@@ -72,7 +72,7 @@ fig.save.cairo <- function(fig, filepath=file.path(PROJHOME, "Output"),
 # Load clean data
 #+ message=FALSE
 gpa.data.clean <- read_csv(file.path(PROJHOME, "Data",
-                                     "kelley_simmons_gpa_2015-10-04.csv"))
+                                     "kelley_simmons_gpa_2015-10-24.csv"))
 
 
 #' ## Figure 1: Cumulative number of GPAs.
@@ -142,8 +142,7 @@ fig.save.cairo(fig.cum.gpas, filename="figure-1-cumulative-gpas",
 
 #' ## Figure 2 (new): Number of GPAs, by issue and creator type.
 gpa.issues.creators <- gpa.data.clean %>%
-  filter(active == 1, !is.na(subject_collapsed), !is.na(creator_collapsed),
-         creator_collapsed != "Overlapping or unknown") %>%
+  filter(active == 1, !is.na(subject_collapsed), !is.na(creator_collapsed)) %>%
   mutate(subject_collapsed = str_split(subject_collapsed, ", ")) %>%
   unnest(subject_collapsed) %>%
   group_by(creator_collapsed, subject_collapsed) %>%
@@ -154,12 +153,12 @@ gpa.issues.creators <- gpa.data.clean %>%
   complete(subject_collapsed, creator_collapsed, fill=list(num = 0)) %>%
   arrange(total_in_group, num) %>%
   mutate(creator_collapsed = fct_relevel(creator_collapsed,
-                                         c("University", "Private", "IGO", "NGO"))) %>%
+                                         c("Other", "University or Private",
+                                           "State", "IGO", "NGO"))) %>%
   mutate(subject_collapsed = fct_inorder(subject_collapsed))
 
 issue.creator.denominator <- gpa.data.clean %>% 
-  filter(active == 1, !is.na(creator_collapsed),
-         creator_collapsed != "Overlapping or unknown") %>% 
+  filter(active == 1, !is.na(creator_collapsed)) %>% 
   nrow
 
 #' *Source: Authors' database.* 
@@ -167,7 +166,7 @@ issue.creator.denominator <- gpa.data.clean %>%
 #' Note: Includes only "active" GPAs as of 2012; excludes defunct cases. Note
 #' that the total count of GPAs is larger than in Figure 1 because we have
 #' double counted cases that straddle issue areas, such as health and
-#' development. Overlapping and unknown creators are ommitted.
+#' development. Overlapping and unknown creators are ommitted. 
 #' 
 #' Several categories collapse the following subcategories: security =
 #' conflict, military; development = development, aid, health, energy, tourism,
@@ -183,8 +182,9 @@ fig.by.issue.creator <- ggplot(gpa.issues.creators,
   geom_barh(stat="identity", position=position_stackv()) + 
   scale_x_continuous(sec.axis = sec_axis(~ . / issue.creator.denominator,
                                          labels=scales::percent)) +
-  scale_fill_manual(values=rev(c("grey20", "grey80", "grey40", "grey60"))) +
-  guides(fill=guide_legend(reverse=TRUE, title=NULL)) +
+  # scale_fill_grey(start=0.9, end=0.2) +
+  scale_fill_manual(values=rev(c("black", "grey50", "grey70", "grey25", "grey90"))) +
+  guides(fill=guide_legend(reverse=TRUE, title=NULL, nrow=1)) +
   labs(x=NULL, y=NULL) +
   theme_gpa() + theme(panel.grid.major.y=element_blank())
 fig.by.issue.creator
