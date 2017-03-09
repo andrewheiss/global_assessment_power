@@ -16,9 +16,9 @@ library(forcats)
 library(stringr)
 library(Cairo)
 library(ggstance)
+library(ggforce)
 library(maptools)
 library(rgdal)
-
 
 # Useful functions
 theme_gpa <- function(base_size=10, base_family="Clear Sans") {
@@ -70,11 +70,23 @@ fig.save.cairo <- function(fig, filepath=file.path(PROJHOME, "Output"),
          width=width, height=height, units=units, type="cairo", dpi=300, ...)
 }
 
+# Clean up the interval labels created by cut()
+# Use with forcats::fct_relabel
+clean.cut.range <- function(x) {
+  # If the level starts with "(", strip all the ( and [s and add 1 to the first value
+  need.to.clean <- str_detect(x, "^\\(")
+  cleaned <- str_replace_all(x[need.to.clean], "\\(|\\]", "") %>% 
+    map_chr(function(x) {
+      x.split <- as.numeric(str_split(x, ",", simplify=TRUE))
+      paste0(x.split[1] + 1, "–", x.split[2])
+    })
+}
+
 
 # Load clean data
 #+ message=FALSE
 gpa.data.clean <- read_csv(file.path(PROJHOME, "Data",
-                                     "kelley_simmons_gpa_2015-10-24.csv"))
+                                     "kelley_simmons_gpa_2017-03-08.csv"))
 
 
 #' ## Figure 1: Cumulative number of GPAs.
@@ -374,3 +386,52 @@ fig.save.cairo(gpa.map, filename="figure-4-gpas-by-country-map",
 #' 
 #' (located at `./Output/figure-5-pathways.pdf` and `./Output/figure-5-pathways.png`)
 #' 
+
+
+#' ## Figure X: Pseudo-networks of indicator creators over time
+#' 
+#' *Source: Authors' data*
+#' 
+gpa.data.clean.creator.long <- gpa.data.clean %>%
+  separate_rows(subject_collapsed, sep=",")
+
+gpa.creator.cumulative <- gpa.data.clean.creator.long %>%
+  filter(!is.na(creator_collapsed)) %>%
+  # Infer death year based on most recent year if not active
+  mutate(end_year = ifelse(active == 0, recent_year, 2015)) %>%
+  # Create list of years, like 1998:2005
+  mutate(year = map2(start_year, end_year, ~ seq(.x, .y))) %>%
+  # Unnest list of years
+  unnest(year) %>%
+  filter(year > 1970) %>%
+  # Divide years into five-year chunks
+  mutate(pentad = cut(year, breaks=seq(1970, 2015, 5), ordered_result=TRUE),
+         pentad = fct_relabel(pentad, clean.cut.range)) %>%
+  # Only select the first year in the pentad. Without this, indexes appear up
+  # to five times in the pentad.
+  group_by(pentad, gpa_id) %>%
+  slice(1) %>%
+  ungroup() %>%
+  arrange(start_year) %>%
+  mutate(subject_collapsed = ordered(fct_inorder(subject_collapsed)),
+         creator_collapsed = ordered(fct_relevel(creator_collapsed,
+                                                 "NGO", "IGO", "State",
+                                                 "University or Private",
+                                                 "Other")))
+
+#+ fig.width=7, fig.height=5
+gpa.type.points <- ggplot(gpa.creator.cumulative, 
+                          aes(x=pentad, y=fct_rev(subject_collapsed),
+                              shape=creator_collapsed)) + 
+  # geom_point(size=0.75, alpha=0.75, position=position_jitter(width=0.25, height=0.30)) +
+  geom_point(size=0.75, alpha=0.6, position=position_jitternormal(sd_x=0.1, sd_y=0.16)) +
+  labs(x=NULL, y=NULL) +
+  guides(shape=guide_legend(title=NULL, override.aes=list(size=3))) +
+  scale_shape_manual(values=c(16, 21, 17, 24, 3)) +
+  theme_gpa() +
+  theme(axis.text.x=element_text(angle=45, hjust=0.5, vjust=0.5),
+        panel.grid.major=element_blank())
+set.seed(12345); gpa.type.points
+
+fig.save.cairo(gpa.type.points, filename="figure-x-indicator-creator-points",
+               width=7, height=5, seed=12345)
