@@ -154,7 +154,7 @@ gpa.data.final <- gpa.data.clean %>%
   left_join(gpa.creators, by=c("creator_type", "gpa_id")) %>%
   left_join(gpa.countries, by=c("country of origin", "gpa_id")) %>%
   select(gpa_id, gpa_name = name, website,
-         start_year, active = Active,
+         start_year, recent_year, active = Active,
          subject_area, subject_collapsed,
          creator_name, creator_type, creator_clean, creator_collapsed,
          country = country_clean, country_collapsed, ISO3) %>%
@@ -162,4 +162,4 @@ gpa.data.final <- gpa.data.clean %>%
 
 write_csv(gpa.data.final,
           path=file.path(PROJHOME, "Data",
-                         "kelley_simmons_gpa_2015-10-24.csv"))
+                         "kelley_simmons_gpa_2017-03-08.csv"))
