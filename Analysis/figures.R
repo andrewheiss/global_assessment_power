@@ -61,9 +61,11 @@ theme_blank_map <- function(base_size=9.5, base_family="Clear Sans") {
 }
 
 fig.save.cairo <- function(fig, filepath=file.path(PROJHOME, "Output"), 
-                           filename, width, height, units="in", ...) {
+                           filename, width, height, units="in", seed=NULL, ...) {
+  if (!is.null(seed)) set.seed(seed)
   ggsave(fig, filename=file.path(filepath, paste0(filename, ".pdf")),
          width=width, height=height, units=units, device=cairo_pdf, ...)
+  if (!is.null(seed)) set.seed(seed)
   ggsave(fig, filename=file.path(filepath, paste0(filename, ".png")),
          width=width, height=height, units=units, type="cairo", dpi=300, ...)
 }
