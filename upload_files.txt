@@ -2,4 +2,6 @@ Analysis/figures.html
 Analysis/figures_files/
 Analysis/interrupted_time_series.html
 Analysis/interrupted_time_series_files/
+Analysis/edb_mentions.html
+Analysis/edb_mentions_files/
 Output/
