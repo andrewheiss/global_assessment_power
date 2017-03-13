@@ -18,3 +18,4 @@ Data/map_data/*
 Data/*.docx
 Data/quotes/2016*
 Data/quotes/*.csv
+Data/**.ods
