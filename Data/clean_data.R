@@ -54,7 +54,7 @@ gpa.issues.collapsed <- gpa.issues %>%
                                     military = "security",
                                     aid = "development",
                                     health = "development",
-                                    energy = "development",
+                                    energy = "environment",
                                     tourism = "development",
                                     education = "development",
                                     trade = "trade & finance",
