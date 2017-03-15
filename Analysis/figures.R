@@ -393,7 +393,12 @@ fig.save.cairo(gpa.map, filename="figure-4-gpas-by-country-map",
 #' *Source: Authors' data*
 #' 
 gpa.data.clean.creator.long <- gpa.data.clean %>%
-  separate_rows(subject_collapsed, sep=",")
+  separate_rows(subject_collapsed, sep=",") %>%
+  mutate(subject_collapsed = str_trim(subject_collapsed))
+
+subject.counts <- gpa.data.clean.creator.long %>%
+  count(subject_collapsed) %>%
+  arrange(desc(n))
 
 gpa.creator.cumulative <- gpa.data.clean.creator.long %>%
   filter(!is.na(creator_collapsed)) %>%
@@ -412,8 +417,12 @@ gpa.creator.cumulative <- gpa.data.clean.creator.long %>%
   group_by(pentad, gpa_id) %>%
   slice(1) %>%
   ungroup() %>%
-  arrange(start_year) %>%
+  left_join(subject.counts, by="subject_collapsed") %>%
+  arrange(pentad, desc(n)) %>%
   mutate(subject_collapsed = ordered(fct_inorder(subject_collapsed)),
+         subject_collapsed = fct_recode(subject_collapsed, 
+                                        `Human rights & Gender` = "Human Rights",
+                                        `Privacy & Legal issues` = "Legal"),
          creator_collapsed = ordered(fct_relevel(creator_collapsed,
                                                  "NGO", "IGO", "State",
                                                  "University or Private",
@@ -421,7 +430,7 @@ gpa.creator.cumulative <- gpa.data.clean.creator.long %>%
 
 #+ fig.width=7, fig.height=5
 gpa.type.points <- ggplot(gpa.creator.cumulative, 
-                          aes(x=pentad, y=fct_rev(subject_collapsed),
+                          aes(x=pentad, y=subject_collapsed,
                               shape=creator_collapsed)) + 
   # geom_point(size=0.75, alpha=0.75, position=position_jitter(width=0.25, height=0.30)) +
   geom_point(size=0.75, alpha=0.6, position=position_jitternormal(sd_x=0.1, sd_y=0.16)) +
