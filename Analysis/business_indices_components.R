@@ -26,7 +26,7 @@ components.long <- read_csv(file.path(PROJHOME, "Data",
   # rowwise() %>%
   # mutate(index_long = ifelse(is.na(short_name), index,
   #                            str_interp("${index} (${short_name})", .))) %>%
-  select(index, start_year, components_clean) %>%
+  select(index = short_name, start_year, components_clean) %>%
   ungroup() %>%
   separate_rows(components_clean, sep = ", ") 
 
@@ -111,8 +111,9 @@ V(g)$color <- case_when(
 
 V(g)$size <- degree(g)^3
 
+
 # Create plot
-set.seed(7)
+set.seed(16)
 plot.network.df <- create_layout(g, layout = "graphopt")
 # See ?layout_igraph_igraph for possible igraph layouts
 # plot.network.df <- create_layout(g, layout = "kk")
@@ -139,7 +140,8 @@ ggsave(components.graph,
                             "indices_components_network.pdf"),
        width = 9, height = 5, units = "in", device = cairo_pdf)
 
-ggsave(components.graph, 
-       filename = file.path(PROJHOME, "Output", 
+ggsave(components.graph,
+       filename = file.path(PROJHOME, "Output",
                             "indices_components_network.png"),
        width = 9, height = 5, units = "in", type = "cairo", dpi = 300)
+
