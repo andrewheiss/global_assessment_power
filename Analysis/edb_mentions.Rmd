@@ -71,11 +71,11 @@ We also enabled duplicate filtering (with moderate similarity). We then download
 There are definitely false positives in the results, but just to get the gist of the data, here's what the distribution of stories looks like during 2016. There's a clear peak in coverage in October, since that's when the EDB report is released.
 
 ```{r load-story-data, message=FALSE}
-stories_2016 <- bind_rows(read_csv(file.path(PROJHOME, "Data",
+stories_2016 <- bind_rows(read_csv(file.path(PROJHOME, "Data", "quotes",
                                              "2016-1.csv")),
-                          read_csv(file.path(PROJHOME, "Data",
+                          read_csv(file.path(PROJHOME, "Data", "quotes",
                                              "2016-2.csv")),
-                          read_csv(file.path(PROJHOME, "Data",
+                          read_csv(file.path(PROJHOME, "Data", "quotes",
                                              "2016-3.csv"))) %>%
   mutate(id = 1:n())
 ```
@@ -117,12 +117,12 @@ to_code <- stories_2016 %>%
   arrange(id, desc(geo_confidence)) %>%
   mutate(country = countrycode(GEOGRAPHIC, "country.name", "country.name"))
 
-write_csv(to_code, file.path(PROJHOME, "Data",
+write_csv(to_code, file.path(PROJHOME, "Data", "quotes",
                              "stories_to_code_WILL_BE_OVERWRITTEN.csv"))
 ```
 
 ```{r plot-country-reactions, message=FALSE}
-coded_stories <- read_csv(file.path(PROJHOME, "Data", "coded_stories_2016.csv"))
+coded_stories <- read_csv(file.path(PROJHOME, "Data", "quotes", "coded_stories_2016.csv"))
 
 country_reactions <- stories_2016 %>%
   left_join(coded_stories, by="id") %>%
@@ -153,7 +153,7 @@ reactions_for_coding <- stories_2016 %>%
 ```
 
 ```{r save-clean-quotes, message=FALSE}
-quotes.raw <- read_csv(file.path(PROJHOME, "Data", "quotes.csv")) %>%
+quotes.raw <- read_csv(file.path(PROJHOME, "Data", "quotes", "quotes.csv")) %>%
   select(-country_fixed)
 
 quotes <- quotes.raw %>%
@@ -163,9 +163,63 @@ quotes <- quotes.raw %>%
          publication = PUBLICATION, headline = HEADLINE) %>%
   arrange(country, date)
 
-write_excel_csv(quotes, file.path(PROJHOME, "Data", "quotes_clean.csv"), na="")
+write_excel_csv(quotes, file.path(PROJHOME, "Data", "quotes", "quotes_clean.csv"), na="")
 ```
 
 ```{r show-clean-quotes, results="asis"}
 quotes %>% datatable(extensions = "Responsive")
+```
+
+
+## Quotes with full stories
+
+```{r quotes-stories}
+template <- "
+
+---
+
+## ${headline}
+
+Story ID: ${id}  
+Country: ${country}  
+Date: ${date}  
+Publication: ${publication}
+
+### Main quote
+
+Person: ${person}  
+Position: ${position}
+
+> ${quote}
+
+### Full article
+
+${body}
+"
+
+quotes.stories <- quotes %>%
+  left_join(stories_2016, by="id") %>%
+  select(id, country, person, position, quote, date, 
+         publication, headline, body=BODY) %>%
+  arrange(country, date) 
+
+quotes.stories.articlized <- quotes.stories %>%
+  rowwise() %>%
+  mutate(article = str_interp(template,
+                              list(id=id, date=date,
+                                   headline=str_replace(headline, "\\n", " "), 
+                                   country=country, publication=publication,
+                                   person=person, position=position,
+                                   quote=quote, body=body)))
+
+output <- file.path(PROJHOME, "Data", "quotes", "nice_quotes.md")
+
+cat("# 2016 official quotes about EDB response", 
+    quotes.stories.articlized$article, file=output)
+
+Pandoc.convert(output, format="docx",
+               footer = FALSE, proc.time = FALSE, 
+               options = "-s", open = FALSE)
+
+write_csv(quotes.stories, file.path(PROJHOME, "Data", "quotes", "nice_quotes.csv"))
 ```

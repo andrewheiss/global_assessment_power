@@ -15,7 +15,8 @@ Graphics/*
 # Data
 Data/*.xls*
 Data/map_data/*
-Data/*.docx
+Data/**.docx
 Data/quotes/2016*
 Data/quotes/*.csv
+Data/quotes/*.md
 Data/**.ods
