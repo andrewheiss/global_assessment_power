@@ -117,6 +117,16 @@ theme.cell.bg <- function(color) {
   gpar(fill = color, col = "white", lwd = 3)
 }
 
+# Colored version
+# col.gov <- "#8acc2d"
+# col.bus <- "#d47200"
+# col.ind <- "#b90081"
+
+# Greyscale version
+col.gov <- "black"
+col.bus <- "grey40"
+col.ind <- "grey75"
+
 
 # Convert long data frame to matrix with row and column names
 components.incidence <- components.long %>%
@@ -169,8 +179,8 @@ components.graph <- ggraph(plot.network.df) +
                   size = 3, repel = TRUE, family = "Clear Sans", fontface = "bold") +
   scale_colour_manual(values = c(Index = "grey50", Business = "white", 
                                  Government = "white", Individual = "white")) +
-  scale_fill_manual(values = c(Index = "white", Business = "#d47200", 
-                               Government = "#8acc2d", Individual = "#b90081")) +
+  scale_fill_manual(values = c(Index = "white", Business = col.bus, 
+                               Government = col.gov, Individual = col.ind)) +
   scale_shape_manual(values = c(15, 21)) +
   guides(color = FALSE, shape = FALSE, size = FALSE, fill = FALSE) +
   theme_graph()
@@ -203,9 +213,9 @@ leg.table$grobs[fg.gov][[1]][["gp"]] <- theme.cell.fg
 leg.table$grobs[fg.bus][[1]][["gp"]] <- theme.cell.fg
 leg.table$grobs[fg.ind][[1]][["gp"]] <- theme.cell.fg
 
-leg.table$grobs[bg.gov][[1]][["gp"]] <- theme.cell.bg("#8acc2d")
-leg.table$grobs[bg.bus][[1]][["gp"]] <- theme.cell.bg("#d47200")
-leg.table$grobs[bg.ind][[1]][["gp"]] <- theme.cell.bg("#b90081")
+leg.table$grobs[bg.gov][[1]][["gp"]] <- theme.cell.bg(col.gov)
+leg.table$grobs[bg.bus][[1]][["gp"]] <- theme.cell.bg(col.bus)
+leg.table$grobs[bg.ind][[1]][["gp"]] <- theme.cell.bg(col.ind)
 
 # grid.newpage(); grid.draw(leg.table)
 
