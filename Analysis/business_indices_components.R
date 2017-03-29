@@ -4,6 +4,9 @@ library(pander)
 library(ggraph)
 library(igraph)
 library(Cairo)
+library(gridExtra)
+library(grid)
+library(gtable)
 
 
 # Generate table of index components -------------------------------------
@@ -84,6 +87,37 @@ write_csv(components.wide, file.path(PROJHOME, "Output",
 
 # Network graph ----------------------------------------------------------
 #
+# Helpful functions and themes
+capitalize <- function(x) {
+  substr(x, 1, 1) <- toupper(substr(x, 1, 1))
+  x
+}
+
+theme_gpa_table <- ttheme_minimal(
+  core = 
+    list(fg_params = 
+           list(hjust = 0, x = 0.05,
+                fontsize = 7,
+                fontfamily = "Clear Sans")),
+  colhead = 
+    list(fg_params = 
+           list(hjust = 0, x = 0.05,
+                fontsize = 7, fontface = 2,
+                fontfamily = "Clear Sans")))
+
+find_cell <- function(table, row, col, name = "core-fg") {
+  l <- table$layout
+  which(l$t == row & l$l == col & l$name == name)
+}
+
+theme.cell.fg <- gpar(col = "white", fontsize = 7, 
+                      fontfamily = "Clear Sans", fontface = 2)
+
+theme.cell.bg <- function(color) {
+  gpar(fill = color, col = "white", lwd = 3)
+}
+
+
 # Convert long data frame to matrix with row and column names
 components.incidence <- components.long %>%
   filter(components_clean != "Government efficiency") %>%
@@ -109,11 +143,18 @@ V(g)$color <- case_when(
   TRUE ~ "Index"
 )
 
+# Rescale nodes by degree
 V(g)$size <- degree(g)^3
+
+# Extract theme names from nodes
+V(g)$name <- str_replace(V(g)$name,
+                         "^Business |^Government |^Individual ", "") %>%
+  capitalize()
 
 
 # Create plot
-set.seed(16)
+seed <- 16
+set.seed(seed)
 plot.network.df <- create_layout(g, layout = "graphopt")
 # See ?layout_igraph_igraph for possible igraph layouts
 # plot.network.df <- create_layout(g, layout = "kk")
@@ -133,15 +174,56 @@ components.graph <- ggraph(plot.network.df) +
   scale_shape_manual(values = c(15, 21)) +
   guides(color = FALSE, shape = FALSE, size = FALSE, fill = FALSE) +
   theme_graph()
-components.graph
 
-ggsave(components.graph, 
+# Create fake legend table
+abbrs <- read_csv(file.path(PROJHOME, "Data",
+                   "business_indices_components.csv")) %>%
+  mutate(legend = sprintf("%s = %s", short_name, index)) %>%
+  arrange(legend)
+
+component.types <- c("Government", "Business", "Individual", "", "")
+
+abbrs.mat <- cbind(component.types,
+                   matrix(abbrs$legend, ncol=2, byrow=FALSE))
+colnames(abbrs.mat) <- c("Themes", "Indexes", "")
+
+# https://cran.r-project.org/web/packages/gridExtra/vignettes/tableGrob.html
+leg.table <- tableGrob(abbrs.mat, theme = theme_gpa_table)
+
+# Modify specific cells
+bg.gov <- find_cell(leg.table, 2, 1, "core-bg")
+bg.bus <- find_cell(leg.table, 3, 1, "core-bg")
+bg.ind <- find_cell(leg.table, 4, 1, "core-bg")
+
+fg.gov <- find_cell(leg.table, 2, 1, "core-fg")
+fg.bus <- find_cell(leg.table, 3, 1, "core-fg")
+fg.ind <- find_cell(leg.table, 4, 1, "core-fg")
+
+leg.table$grobs[fg.gov][[1]][["gp"]] <- theme.cell.fg
+leg.table$grobs[fg.bus][[1]][["gp"]] <- theme.cell.fg
+leg.table$grobs[fg.ind][[1]][["gp"]] <- theme.cell.fg
+
+leg.table$grobs[bg.gov][[1]][["gp"]] <- theme.cell.bg("#8acc2d")
+leg.table$grobs[bg.bus][[1]][["gp"]] <- theme.cell.bg("#d47200")
+leg.table$grobs[bg.ind][[1]][["gp"]] <- theme.cell.bg("#b90081")
+
+# grid.newpage(); grid.draw(leg.table)
+
+# Add legend plot to actual plot
+set.seed(seed)
+components.graph.legend <- components.graph + 
+  coord_cartesian(xlim = c(-80, 100), ylim = c(-120, 70)) +
+  annotation_custom(leg.table, xmin=-80, xmax=25, ymin=-120, ymax=-80)
+components.graph.legend
+
+set.seed(seed)
+ggsave(components.graph.legend, 
        filename = file.path(PROJHOME, "Output", 
                             "indices_components_network.pdf"),
        width = 9, height = 5, units = "in", device = cairo_pdf)
 
-ggsave(components.graph,
+set.seed(seed)
+ggsave(components.graph.legend,
        filename = file.path(PROJHOME, "Output",
                             "indices_components_network.png"),
        width = 9, height = 5, units = "in", type = "cairo", dpi = 300)
-
