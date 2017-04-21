@@ -1,11 +1,71 @@
-id,index,start_year,short_name,creator,focus,components,components_clean,links,formula
-1,Global Competitiveness Index,2004,GCI,World Economic Forum,"Business environment, wellbeing of workers and citizens","institutions, infrastructure, macroeconomic environment, health and primary education, higher education and training, goods market efficiency, labor market efficiency, financial market development, technological readiness, market size, business sophistication, and innovation","Government efficiency, Government infrastructure, Business efficiency, Individual well-being, Individual innovation",,
-2,Index of Economic Freedom,1995,IEF,Heritage Foundation and WSJ,"Economic freedom, conservative policy","rule of law (property rights, government integrity, and judicial effectiveness), government size (government spending, tax burden, fiscal health), regulatory efficiency (business freedom, labor freedom, monetary freedom), and open markets (trade freedom, investment freedom, financial freedom)","Government efficiency, Government rule of law, Government access to markets, Business freedom, Individual freedom",,
-3,Global Entrepreneurship Monitor,1999,EGM,Babson College and London Business School,Entrepreneurial behavior,"framework: social, cultural, political and economic context","Government efficiency, Individual well-being, Individual innovation",WEF,
-4,World Competitiveness Yearbook,1997,WCY,World Competitiveness Center,Environment for competition,"economic performance, government efficiency, business efficiency, and infrastructure","Government efficiency, Government infrastructure, Business efficiency, Business performance",,
-5,Enabling Trade Index,2008,ETI,World Economic Form and Global Alliance for Trade Facilitation,"Yay globalization, boo protectionism","market access (Pillar 1: domestic market access, Pillar 2: foreign market access), border administration (Pillar 3: efficiency and transparency of border administration), infrastructure (Pillar 4: availability and quality of transport infrastructure, Pillar 5: availability and quality of transport services, Pillar 6: Availability and use of information and communication technologies), and operating environment (Pillar 7: operating environment","Government efficiency, Government infrastructure, Government access to markets",,
-6,Best Countries for Business,2006,BCB,Forbes,"Championing entrepreneurial capitalism; yay trade, deregulation, and monetary freedom; boo red tape and welfare and taxes","Property rights, Innovation, Taxes , Technology, Corruption, Trade and monetary Freedom, Personal Freedom, Red tape, Investor protection, Stock market performance","Government efficiency, Government rule of law, Business performance, Business freedom, Individual freedom","WEF Global Competitiveness; EDB, TI Corruption, IEF, Freedom House",
-7,Business Environment Rankings,1997,BER,Economist Intelligence Unit,Quality and attractiveness of the business environment,"political environment, macroeconomic environment, market opportunities, policy towards free enterprise and competition, policy towards foreign investment, foreign trade and exchange controls, taxes, financing, labour market, and infrastructure","Government efficiency, Government access to markets, Business freedom","EIU, IEF, WCY, HDR, WB, WEF GCR",
-8,Inward FDI,2002,FDI,UNCTAD,More FDI is better for ending poverty,FDI and GDP only,"Government efficiency, Business performance",,\text{FDI Performance Index}_i = \frac{\frac{\text{FDI}_i}{\text{FDI}_{\text{world}}}}{\frac{\text{GDP}_i}{\text{GDP}_{\text{world}}}}
-9,Ease of Doing Business,2003,EDB,World Bank,Promote business activities,"starting a business, dealing with construction permits, getting electricity, registering property, getting credit, protecting minority investors, paying taxes, trading across borders, enforcing contracts, resolving insolvency, and labor market regulation ","Government efficiency, Government rule of law, Government infrastructure, Government access to markets, Business efficiency, Business freedom",,
-10,Economic Freedom of the World,1995,EFW,The Fraser Institute,How institutions and national policies protect individuals and property from aggression by others,"In order to receive a high EFW rating, a country must provide secure protection of privately owned property, a legal system that treats all equally, even-handed enforcement of contracts, and a stable monetary environment. It also must keep taxes low, refrain from creating barriers to both domestic and international trade, and rely more fully on markets rather than government spending and regulation to allocate goods and resources.","Government efficiency, Government rule of law, Government access to markets, Business freedom",,
+id,raw_components,general_theme
+1,business environment,Free markets
+1,wellbeing of workers and citizens institutions,Employee support
+1,infrastructure,Infrastructure
+1,macroeconomic environment,Free markets
+1,health and primary education,Employee support
+1,higher education and training,Employee support
+1,goods market efficiency,Market efficiency
+1,labor market efficiency,Market efficiency
+1,financial market development,Market efficiency
+1,technological readiness,Employee support
+1,market size,Market efficiency
+1,business sophistication,Business efficiency
+1,innovation,Business efficiency
+2,"rule of law (property rights, government integrity, and judicial effectiveness)","Rule of law, Personal freedom"
+2,"government size (government spending, tax burden, fiscal health)","Minimal taxes, Government efficiency"
+2,"regulatory efficiency (business freedom, labor freedom, monetary freedom)",Minimal regulations
+2,"open markets (trade freedom, investment freedom, financial freedom)",Free markets
+3,entrepreneurial behavior,Business efficiency
+3,social context,Employee support
+3,cultural context,Employee support
+3,political context,Government efficiency
+3,economic context,Business efficiency
+4,economic performance,Business performance
+4,government efficiency,Government efficiency
+4,business efficiency,Business efficiency
+4,infrastructure,Infrastructure
+5,"market access (Pillar 1: domestic market access, Pillar 2: foreign market access), ",Free markets
+5,"border administration (Pillar 3: efficiency and transparency of border administration), ",Rule of law
+5,"infrastructure (Pillar 4: availability and quality of transport infrastructure, Pillar 5: availability and quality of transport services, Pillar 6: Availability and use of information and communication technologies), ",Infrastructure
+5,operating environment (Pillar 7: operating environment),Government efficiency
+6,Property rights,Rule of law
+6,Innovation,Business efficiency
+6,Taxes ,Minimal taxes
+6,Technology,Infrastructure
+6,Corruption,Rule of law
+6,Trade and monetary freedom,Free markets
+6,Personal freedom,Personal freedom
+6,Red tape,Free markets
+6,Investor protection,Business protection
+6,Stock market performance,Business efficiency
+7,political environment,Government efficiency
+7,macroeconomic environment,Free markets
+7,market opportunities,Market efficiency
+7,policy towards free enterprise and competition,Free markets
+7,policy towards foreign investment,Free markets
+7,foreign trade and exchange controls,Free markets
+7,taxes,Minimal taxes
+7,financing,Minimal regulations
+7,labour market,Minimal regulations
+7,infrastructure,Infrastructure
+8,FDI,Business performance
+8,GDP,Business performance
+9,starting a business,Minimal regulations
+9,dealing with construction permits,Minimal regulations
+9,getting electricity,Infrastructure
+9,registering property,Minimal regulations
+9,getting credit,Minimal regulations
+9,protecting minority investors,Business protection
+9,paying taxes,Minimal taxes
+9,trading across borders,Free markets
+9,enforcing contracts,Rule of law
+9,resolving insolvency,Rule of law
+9,labor market regulation ,Minimal regulations
+10,secure protection of privately owned property,Rule of law
+10,legal system that treats all equally,Rule of law
+10,even-handed enforcement of contracts,Rule of law
+10,stable monetary environment,Minimal regulations
+10,keep taxes low,Minimal taxes
+10,refrain from creating barriers to both domestic and international trade,Free markets
+10,rely more fully on markets rather than government spending and regulation to allocate goods and resources,Free markets

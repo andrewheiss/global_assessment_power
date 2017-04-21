@@ -9,6 +9,8 @@ library(grid)
 library(gtable)
 
 
+
+
 # Generate table of index components -------------------------------------
 
 component.labels <- c(
@@ -24,42 +26,46 @@ component.labels <- c(
   "Individual freedom"
 )
 
+
+
+
+
+indices <- read_csv(file.path(PROJHOME, "Data", "business_indices.csv"))
+
 components.long <- read_csv(file.path(PROJHOME, "Data",
                                       "business_indices_components.csv")) %>%
-  # rowwise() %>%
-  # mutate(index_long = ifelse(is.na(short_name), index,
-  #                            str_interp("${index} (${short_name})", .))) %>%
-  select(index = short_name, start_year, components_clean) %>%
-  ungroup() %>%
-  separate_rows(components_clean, sep = ", ") 
+  separate_rows(general_theme, sep = ", ") %>%
+  left_join(indices, by = "id")
 
-components.wide <- components.long %>%
-  mutate(dot = "•",
-         components_clean = factor(components_clean, levels = component.labels, 
-                                   ordered = TRUE)) %>%
-  spread(components_clean, dot) %>%
+components.long.unique <- components.long %>%
+  distinct(general_theme, index, .keep_all = TRUE)
+
+components.table <- components.long.unique %>%
+  select(index = short_name, start_year, general_theme) %>%
+  mutate(dot = "•") %>%
+  spread(general_theme, dot) %>%
   arrange(start_year) %>%
   rename(Index = index, `Start year` = start_year)
 
-output <- pandoc.table.return(components.wide, split.tables = Inf, missing = "", 
-                              justify = paste0(c("l", rep("c", ncol(components.wide) - 1)),
+output <- pandoc.table.return(components.table, split.tables = Inf, missing = "", 
+                              justify = paste0(c("l", rep("c", ncol(components.table) - 1)),
                                                collapse = ""),
-                              caption = "Ideological components of business indices")
+                              caption = "Ideological themes of business indices")
 
 cat(output, file = file.path(PROJHOME, "Output", 
-                             "table_business_indicies_components.txt"))
+                             "table_business_indices_components_new.txt"))
 
 Pandoc.convert(file.path(PROJHOME, "Output", 
-                         "table_business_indicies_components.txt"),
+                         "table_business_indices_components_new.txt"),
                format = "html", footer = FALSE, proc.time = FALSE, 
                options = "-s", open = FALSE)
 
 Pandoc.convert(file.path(PROJHOME, "Output", 
-                         "table_business_indicies_components.txt"),
+                         "table_business_indices_components_new.txt"),
                format = "docx", open = FALSE)
 
-write_csv(components.wide, file.path(PROJHOME, "Output", 
-                                     "table_business_indicies_components.csv"), 
+write_csv(components.table, file.path(PROJHOME, "Output", 
+                                      "table_business_indices_components.csv"), 
           na = "")
 
 
@@ -129,11 +135,11 @@ col.ind <- "grey75"
 
 
 # Convert long data frame to matrix with row and column names
-components.incidence <- components.long %>%
-  filter(components_clean != "Government efficiency") %>%
+components.incidence <- components.long.unique %>%
+  select(index = short_name, general_theme, start_year) %>%
   rename(thing = index) %>%
   mutate(dot = 1) %>%
-  spread(components_clean, dot, fill=0) %>%
+  spread(general_theme, dot, fill=0) %>%
   arrange(start_year) %>%
   as.data.frame() %>%  # So tibble doesn't yell about row names
   magrittr::set_rownames(.$thing) %>%
@@ -163,7 +169,9 @@ V(g)$name <- str_replace(V(g)$name,
 
 
 # Create plot
-seed <- 16
+seed <- 19
+
+# for (i in 1:50) {
 set.seed(seed)
 plot.network.df <- create_layout(g, layout = "graphopt")
 # See ?layout_igraph_igraph for possible igraph layouts
@@ -174,16 +182,34 @@ plot.network.df <- create_layout(g, layout = "graphopt")
 
 components.graph <- ggraph(plot.network.df) + 
   geom_edge_fan(aes(alpha = ..index..), show.legend = FALSE) +
-  geom_node_point(aes(color = color, fill = color, shape = type, size = size)) +
-  geom_node_label(aes(color = color, fill = color, label = name),
+  geom_node_point(aes(color = type, fill = type, shape = type, size = size)) + 
+  geom_node_label(aes(color = type, fill = type, label = name),
                   size = 3, repel = TRUE, family = "Clear Sans", fontface = "bold") +
-  scale_colour_manual(values = c(Index = "grey50", Business = "white", 
-                                 Government = "white", Individual = "white")) +
-  scale_fill_manual(values = c(Index = "white", Business = col.bus, 
-                               Government = col.gov, Individual = col.ind)) +
+  scale_color_manual(values = c("grey50", "white")) +
+  scale_fill_manual(values = c("white", "black")) +
   scale_shape_manual(values = c(15, 21)) +
   guides(color = FALSE, shape = FALSE, size = FALSE, fill = FALSE) +
   theme_graph()
+
+# set.seed(seed)
+# ggsave(components.graph,
+#        filename = file.path("~/Desktop/bloop",
+#                             paste0(i, ".png")),
+#        width = 9, height = 5, units = "in", type = "cairo", dpi = 300)
+# }
+  
+components.graph
+# # geom_node_point(aes(color = color, fill = color, shape = type, size = size)) +
+#   # geom_node_point(aes(color = color, fill = color, shape = type, size = size)) +
+#   geom_node_label(aes(color = color, fill = color, label = name),
+#                   size = 3, repel = TRUE, family = "Clear Sans", fontface = "bold") +
+#   scale_colour_manual(values = c(Index = "grey50", Business = "white", 
+#                                  Government = "white", Individual = "white")) +
+#   scale_fill_manual(values = c(Index = "white", Business = col.bus, 
+#                                Government = col.gov, Individual = col.ind)) +
+#   scale_shape_manual(values = c(15, 21)) +
+#   guides(color = FALSE, shape = FALSE, size = FALSE, fill = FALSE) +
+#   theme_graph()
 
 # Create fake legend table
 abbrs <- read_csv(file.path(PROJHOME, "Data",
