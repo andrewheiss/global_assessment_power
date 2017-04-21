@@ -86,7 +86,7 @@ clean.cut.range <- function(x) {
 # Load clean data
 #+ message=FALSE
 gpa.data.clean <- read_csv(file.path(PROJHOME, "Data",
-                                     "kelley_simmons_gpa_2017-03-08.csv"))
+                                     "kelley_simmons_gpa_2017-04-21.csv"))
 
 
 #' ## Figure 1: Cumulative number of GPAs.
@@ -124,30 +124,34 @@ gpa.cum.plot <- gpa.data.clean %>%
   mutate(cum_total = cumsum(total)) %>%
   ungroup() %>%
   # Plot the cumulative number of GPAs and the actual number of defunct GPAs
-  mutate(plot_value = ifelse(active == 1, cum_total, total)) %>%
-  mutate(active = factor(active, levels=c(1, 0),
-                         labels=c("Continuously in use   ", "Now defunct"),
+  mutate(plot_value = ifelse(active, cum_total, total)) %>%
+  mutate(active = factor(active, levels=c(TRUE, FALSE),
+                         labels=c("Active", "Discontinued"),
                          ordered=TRUE))
 
-gpas.active <- gpa.data.clean %>% filter(active == 1) %>% nrow
-gpas.defunct <- gpa.data.clean %>% filter(active == 0) %>% nrow
+gpas.active <- gpa.data.clean %>% filter(active == TRUE) %>% nrow
+gpas.defunct <- gpa.data.clean %>% filter(active == FALSE) %>% nrow
 
 #' *Source: Authors' database.*
 #' 
-#' Note: "Now defunct" denotes GPAs that appeared to be actively updated in
-#' that year but were discontinued. Light grey bars represent GPAs that meet
-#' our criteria and appear to be regularly updated as of 2012.
+#' Note: "Discontinued" denotes GPAs that appeared to be actively updated in
+#' that year but were discontinued. Dark bars represent GPAs that meet
+#' our criteria and appear to be regularly updated as of 2014.
 #' 
-#' N = `r gpas.active` active GPAs; `r gpas.defunct` defunct GPAs.
+#' N = `r gpas.active` active GPAs; `r gpas.defunct` discontinued GPAs.
 #' 
 #+ fig.width=5, fig.height=2.5
-fig.cum.gpas <- ggplot(gpa.cum.plot, aes(x=chunk_name, y=plot_value, fill=active)) +
+fig.cum.gpas <- ggplot(gpa.cum.plot, aes(x=chunk_name, y=plot_value, fill=fct_rev(active))) +
   geom_col(position="stack") +
   scale_fill_manual(values=c("grey70", "grey30"), name=NULL) +
+  guides(fill=guide_legend(reverse = TRUE)) +
   labs(x=NULL, y=NULL) +
   theme_gpa(9) + theme(legend.key.size=unit(0.65, "lines"),
                        legend.key=element_blank(), legend.spacing=unit(0.25, "lines"),
-                       panel.grid.major.x=element_blank())
+                       panel.grid.major.x=element_blank(),
+                       panel.grid.minor.y = element_blank(),
+                       legend.position = c(0.1, 0.9),
+                       legend.background=element_blank())
 fig.cum.gpas
 
 fig.save.cairo(fig.cum.gpas, filename="figure-1-cumulative-gpas",
@@ -177,7 +181,7 @@ issue.creator.denominator <- gpa.data.clean %>%
 
 #' *Source: Authors' database.* 
 #' 
-#' Note: Includes only "active" GPAs as of 2012; excludes defunct cases. Note
+#' Note: Includes only "active" GPAs as of 2014; excludes defunct cases. Note
 #' that the total count of GPAs is larger than in Figure 1 because we have
 #' double counted cases that straddle issue areas, such as health and
 #' development. Overlapping and unknown creators are ommitted. 
@@ -414,6 +418,7 @@ gpa.creator.cumulative <- gpa.data.clean.creator.long %>%
          pentad = fct_relabel(pentad, clean.cut.range)) %>%
   # Only select the first year in the pentad. Without this, indexes appear up
   # to five times in the pentad.
+  filter(!is.na(pentad)) %>%
   group_by(pentad, gpa_id) %>%
   slice(1) %>%
   ungroup() %>%

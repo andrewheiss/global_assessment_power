@@ -10,14 +10,28 @@ library(readxl)
 library(stringr)
 
 # Load and clean data
-gpa.data.raw <- read_excel(file.path(PROJHOME, "Data", "masterdata1.3.xlsx"),
+gpa.data.raw <- read_excel(file.path(PROJHOME, "Data", "masterdata1.6.xlsx"),
                            sheet="main data sheet")
+
+# I had to make a few manual adjustments to the Excel file for it to import correctly:
+# 
+# - Composite Index of National Capability: Marked most recent year as 2012, based on http://www.correlatesofwar.org/data-sets/national-material-capabilities
+# - Country Risk Assessment: Assumed start year as 2012
+# - Global Corruption Barometer: Removed 2015-2017 range for most recent year and replaced with 2017
+# - Global Food Index: Marked 1994 as start year, 2016 as most recent year, based on raw data at https://drive.google.com/file/d/0B4nHwAB60d7WeUUzWW1XSms2dXM/edit
+# - Global Go To Think Tank Index: Marked creator type as 1 (university)
+# - Global Liveability Ranking: Removed question mark from 2009 start year
+# - Global Right to Information Rating: Added "governance" as subject area; assumed 2010 start year
+# - Global Youth Wellbeing Index: Assumed start year as 2012, based on ¶ at bottom of http://www.youthindex.org/about/ saying index comes from 2012 initiatve
+# - International Aid Transparency Initiative Annual Report: Removed "(not all of which are nations)" from the number of countries
+# - Nuclear Materials Security Index: Changed "25+151" to 176 in the number of countries
+# - Sustainable Society Index: Moved "Geurt van de Kerk- E-mail" to the appropriate column
+# - US Chamber International IP Index: Removed quesation mark from 2014 start year
 
 # Only use the first 30 columns. Need to use [,] indexing because dplyr::select
 # chokes on all the duplicated NA column names
 gpa.data.clean <- gpa.data.raw[, 2:31] %>%
   filter(!is.na(name)) %>%
-  filter(duplicate != 1) %>%
   arrange(name) %>%
   mutate(gpa_id = row_number())
 
@@ -154,12 +168,13 @@ gpa.data.final <- gpa.data.clean %>%
   left_join(gpa.creators, by=c("creator_type", "gpa_id")) %>%
   left_join(gpa.countries, by=c("country of origin", "gpa_id")) %>%
   select(gpa_id, gpa_name = name, website,
-         start_year, recent_year, active = Active,
+         start_year, recent_year,
          subject_area, subject_collapsed,
          creator_name, creator_type, creator_clean, creator_collapsed,
          country = country_clean, country_collapsed, ISO3) %>%
-  mutate_at(vars(gpa_id, start_year, active, creator_type), as.integer)
+  mutate_at(vars(gpa_id, start_year, creator_type), as.integer) %>%
+  mutate(active = recent_year >= 2014)
 
 write_csv(gpa.data.final,
           path=file.path(PROJHOME, "Data",
-                         "kelley_simmons_gpa_2017-03-08.csv"))
+                         "kelley_simmons_gpa_2017-04-21.csv"))
