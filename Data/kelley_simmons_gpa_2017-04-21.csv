@@ -175,7 +175,7 @@ gpa_id,gpa_name,website,start_year,recent_year,subject_area,subject_collapsed,cr
 173,Lisbon Scorecard,http://www.ceps.eu/content/1noth-lisbon-scorecard-measures-progress-road-2020-ceps-membership-meeting,2000,2010,Economic,Economic,Center for European Reform,3,NGO,NGO,United Kingdom,United Kingdom,GBR,FALSE
 174,Logistics Performance Index,http://lpi.worldbank.org/,2007,2016,"Economic, Trade","Economic, Trade & Finance",The World bank,5,IGO,IGO,USA,United States,USA,TRUE
 175,Low-Carbon Competitiveness Index,http://www.vivideconomics.com/uploads/reports/g20-low-carbon-competitiveness-index-2012-update/LCCI_Index_2012_update.pdf,2009,2013,Environment,Environment,Vivid Economics,4,Private,University or Private,United Kingdom,United Kingdom,GBR,FALSE
-176,MCC Country Scorecards,https://www.mcc.gov/who-we-fund/scorecards,2004,2017,Governance; Economic,Governance; Economic,MCC,2,National government,State,United States,United States,USA,TRUE
+176,MCC Country Scorecards,https://www.mcc.gov/who-we-fund/scorecards,2004,2017,"Governance, Economic","Governance, Economic",MCC,2,National government,State,United States,United States,USA,TRUE
 177,Media Sustainability Index,http://www.irex.org/project/media-sustainability-index-msi,2000,2016,"Social, Development","Social, Development",International Research and Exchanges Board/ USaid,2,National government,State,USA,United States,USA,TRUE
 178,Millennium Challenge Account country rankings,http://www.mcc.gov/pages/selection/scorecards,2004,2017,Development,Development,U.S. Government Millennium Challenge Corporation,2,National government,State,USA,United States,USA,TRUE
 179,Mother’s Index,http://www.savethechildren.org/site/c.8rKLIXMGIpI4E/b.8585863/k.9F31/State_of_the_Worlds_Mothers.htm?msource=wenlpstw0513,2000,2015,Social,Social,Save the Children,3,NGO,NGO,United Kingdom,United Kingdom,GBR,TRUE
@@ -211,7 +211,7 @@ gpa_id,gpa_name,website,start_year,recent_year,subject_area,subject_collapsed,cr
 208,Resource Governance Index,http://www.revenuewatch.org/rgi,2013,2013,"Environment, Governance","Environment, Governance",National Resource Governance Institute,3,NGO,NGO,USA,United States,USA,FALSE
 209,Rule of Law Index,http://worldjusticeproject.org/rule-law-index-map,2009,2016,Governance,Governance,World Justice Project,3,NGO,NGO,USA,United States,USA,TRUE
 210,Science and Technology Indicators,ftp://ftp.cordis.europa.eu/pub/indicators/docs/3rd_report.pdf,2001,2003,Development,Development,European Commission,5,IGO,IGO,Belgium,Europe,BEL,FALSE
-211,Single Market Scoreboard,http://ec.europa.eu/internal_market/scoreboard/,1997,2016,Governance; Economic,Governance; Economic,European Commission,5,IGO,IGO,Belgium,Europe,BEL,TRUE
+211,Single Market Scoreboard,http://ec.europa.eu/internal_market/scoreboard/,1997,2016,"Governance, Economic","Governance, Economic",European Commission,5,IGO,IGO,Belgium,Europe,BEL,TRUE
 212,Social Justice Index ,http://www.sgi-network.org/pdf/SGI11_Social_Justice_OECD.pdf,2012,2016,Social,Social, Bertelsmann Foundation,3,NGO,NGO,Germany,Europe,DEU,TRUE
 213,Social Progress Index,http://www.socialprogressimperative.org/data/spi,2014,2016,Social,Social,Social Progress Imperative,3,NGO,NGO,United Kingdom,United Kingdom,GBR,TRUE
 214,Social Watch Scorecard,http://www.socialwatch.org/node/11939,1999,2005,"Social, Development","Social, Development",Social Watch,3,NGO,NGO,Uruguay,Global South,URY,FALSE
