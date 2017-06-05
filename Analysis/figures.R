@@ -19,6 +19,7 @@ library(ggstance)
 library(ggforce)
 library(maptools)
 library(rgdal)
+library(zoo)
 
 # Useful functions
 theme_gpa <- function(base_size=10, base_family="Clear Sans") {
@@ -101,32 +102,60 @@ year.chunks <- tribble(
   1995,         1999,       "1995–99",
   2000,         2004,       "2000–04",
   2005,         2009,       "2005–09",
-  2010,         2014,       "2010–14"
+  2010,         2014,       "2010–14",
+  2015,         2020,       "2015+"
 ) %>%
   mutate(chunk_name = ordered(fct_inorder(chunk_name)))
 
-gpa.cum.plot <- gpa.data.clean %>%
-  # Calculuate the number of GPAs in each year by active status
-  group_by(start_year, active) %>%
+year.chunks.long <- year.chunks %>%
+  rowwise() %>%
+  summarise(chunk_name = chunk_name, years = list(chunk_start:chunk_end)) %>%
+  unnest()
+
+years.active <- gpa.data.clean %>% 
+  rowwise() %>%
+  summarise(gpa_id = gpa_id, years = list(start_year:recent_year), 
+            last.active = recent_year) %>%
+  unnest() %>%
+  mutate(active = TRUE)
+
+gpas.active.over.time <- years.active %>%
+  expand(gpa_id, years) %>%
+  left_join(years.active, by=c("gpa_id", "years")) %>%
+  group_by(gpa_id) %>%
+  mutate(last.active = na.locf(last.active, na.rm=FALSE)) %>%
+  # Get rid of rows with absolutely no data
+  filter((!is.na(last.active) | !is.na(active))) %>%
+  # Carry forward the active status of the last year marked if the GPA is still
+  # active (i.e. last_active is >= 2014). Otherwise, mark as inactive and carry
+  # forward.
+  ungroup() %>%
+  mutate(imputed.active = case_when(
+    is.na(.$active) & .$last.active >= 2014 ~ TRUE,
+    is.na(.$active) & .$last.active < 2014 ~ FALSE,
+    TRUE ~ .$active
+  )) %>%
+  # Keep all active years; only keep the first inactive year
+  group_by(gpa_id, imputed.active) %>%
+  filter(imputed.active == TRUE | 
+           (imputed.active == FALSE & row_number() == 1)) %>%
+  ungroup()
+
+gpa.cum.plot <- gpas.active.over.time %>%
+  left_join(year.chunks.long, by="years") %>%
+  group_by(gpa_id, chunk_name, imputed.active) %>%
+  slice(1) %>%
+  group_by(chunk_name, imputed.active) %>%
   summarise(num = n()) %>%
+  group_by(imputed.active) %>%
+  # Calculate cumulative total
+  mutate(cum_total = cumsum(num)) %>%
   ungroup() %>%
-  # Join the year chunks to the summary table 
-  mutate(temp = TRUE) %>%
-  left_join(year.chunks %>% mutate(temp = TRUE), by="temp") %>%
-  # Select only rows where the GPA start year is within the chunk
-  filter(start_year >= chunk_start, start_year <= chunk_end) %>%
-  select(-temp) %>%
-  # Calculate number of GPAs in each chunk
-  group_by(chunk_name, active) %>%
-  summarise(total = sum(num)) %>%
-  # Calculate the cumulative sum of active GPAs
-  group_by(active) %>%
-  mutate(cum_total = cumsum(total)) %>%
-  ungroup() %>%
-  # Plot the cumulative number of GPAs and the actual number of defunct GPAs
-  mutate(plot_value = ifelse(active, cum_total, total)) %>%
-  mutate(active = factor(active, levels=c(TRUE, FALSE),
-                         labels=c("Active", "Discontinued"),
+  # Only use cumulative total for inactive ones, since they drop out of the
+  # data and aren't repeated like the active ones
+  mutate(plot_value = ifelse(imputed.active, num, cum_total)) %>%
+  mutate(active = factor(imputed.active, levels=c(TRUE, FALSE),
+                         labels=c("Active GPAs in period", "Cumulative discontinued GPAs"),
                          ordered=TRUE))
 
 gpas.active <- gpa.data.clean %>% filter(active == TRUE) %>% nrow
@@ -134,28 +163,33 @@ gpas.defunct <- gpa.data.clean %>% filter(active == FALSE) %>% nrow
 
 #' *Source: Authors' database.*
 #' 
-#' Note: "Discontinued" denotes GPAs that appeared to be actively updated in
-#' that year but were discontinued. Dark bars represent GPAs that meet
-#' our criteria and appear to be regularly updated as of 2014.
+#' Note: "Active" denotes GPAs that were maintained in the given time period. 
+#' GPAs that have not been updated since 2014 are marked as "Discontinued" in 
+#' the year following the last active year.
 #' 
-#' N = `r gpas.active` active GPAs; `r gpas.defunct` discontinued GPAs.
+#' N = `r gpas.active` active GPAs in 2015; `r gpas.defunct` total discontinued GPAs.
 #' 
-#+ fig.width=5, fig.height=2.5
-fig.cum.gpas <- ggplot(gpa.cum.plot, aes(x=chunk_name, y=plot_value, fill=fct_rev(active))) +
-  geom_col(position="stack") +
-  scale_fill_manual(values=c("grey70", "grey30"), name=NULL) +
-  guides(fill=guide_legend(reverse = TRUE)) +
+#+ fig.width=5.5, fig.height=2.5
+fig.cum.gpas <- ggplot(gpa.cum.plot, aes(x=chunk_name, y=plot_value)) +
+  geom_col(data=filter(gpa.cum.plot, imputed.active), aes(fill=active)) +
+  geom_line(data=filter(gpa.cum.plot, !imputed.active),
+            aes(color=active, group=active), size=1) +
+  scale_color_manual(values=c("grey30"), name=NULL) +
+  scale_fill_manual(values=c("grey70"), name=NULL) +
+  guides(fill=guide_legend(order=1),
+         color=guide_legend(order=2)) +
   labs(x=NULL, y=NULL) +
   theme_gpa(9) + theme(legend.key.size=unit(0.65, "lines"),
-                       legend.key=element_blank(), legend.spacing=unit(0.25, "lines"),
+                       legend.key=element_blank(), legend.spacing=unit(0, "lines"),
+                       legend.margin = margin(0),
                        panel.grid.major.x=element_blank(),
                        panel.grid.minor.y = element_blank(),
-                       legend.position = c(0.1, 0.9),
+                       legend.position = c(0.175, 0.9),
                        legend.background=element_blank())
 fig.cum.gpas
 
 fig.save.cairo(fig.cum.gpas, filename="figure-1-cumulative-gpas",
-               width=5, height=2.5)
+               width=5.5, height=2.5)
 
 
 #' ## Figure 2 (new): Number of GPAs, by issue and creator type.
