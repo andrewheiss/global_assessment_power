@@ -320,6 +320,58 @@ fig.save.cairo(fig.by.creator, filename="figure-3-gpas-by-creator",
                width=5, height=2.5)
 
 
+#' ## Figure X: GPA creators, by type (GPAs active as of 2014)
+#' 
+gpa.creators.active <- gpa.data.clean %>%
+  filter(active) %>%
+  filter(!is.na(creator_collapsed)) %>%
+  group_by(creator_collapsed) %>%
+  summarise(num = n()) %>%
+  arrange(num) %>%
+  mutate(creator_collapsed = str_replace(creator_collapsed, 
+                                         "ping or", "ping\nor")) %>%
+  mutate(creator_collapsed = fct_inorder(creator_collapsed))
+
+creator.active.denominator <- gpa.data.clean %>% 
+  filter(active) %>%
+  filter(!is.na(creator_collapsed)) %>% 
+  nrow
+
+creator.ngos <- gpa.creators.active %>%
+  filter(creator_collapsed == "NGO") %>%
+  select(num) %>% unname() %>% unlist() %>% c()
+
+creator.ngos.pct <- scales::percent(creator.ngos / 
+                                      creator.active.denominator)
+
+creator.states.igos <- gpa.creators.active %>%
+  filter(creator_collapsed %in% c("IGO", "State")) %>%
+  summarise(num = sum(num)) %>%
+  select(num) %>% unname() %>% unlist() %>% c()
+
+creator.states.igos.pct <- scales::percent(creator.states.igos / 
+                                             creator.active.denominator)
+
+#' The figure below shows the distribution of the creator types among the currently active GPAs in our database, showing that `r creator.ngos.pct` percent of GPAs are created by NGOs, while only `r creator.states.igos.pct` are in the direct control of states or IGOs.
+#' 
+#' 
+#' *Source: Authors' database.*
+#' 
+#' N = `r creator.active.denominator`.
+#' 
+#+ fig.width=5, fig.height=2.5
+fig.by.creator.active <- ggplot(gpa.creators.active, aes(x=num, y=creator_collapsed)) +
+  geom_barh(stat="identity") +
+  scale_x_continuous(sec.axis = sec_axis(~ . / creator.active.denominator,
+                                         labels=scales::percent)) +
+  labs(x=NULL, y=NULL) +
+  theme_gpa() + theme(panel.grid.major.y=element_blank())
+fig.by.creator.active
+
+fig.save.cairo(fig.by.creator.active, filename="figure-x-gpas-by-creator-active",
+               width=5, height=2.5)
+
+
 #' ## Figure 4: Country of GPA source headquarters.
 gpa.countries <- gpa.data.clean %>%
   group_by(country_collapsed) %>%
