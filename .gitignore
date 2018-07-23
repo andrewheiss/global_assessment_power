@@ -5,7 +5,7 @@
 .Ruserdata
 
 # R output stuff
-**_files/*
+**/*_files/*
 Output/*
 *.html
 
@@ -13,10 +13,10 @@ Output/*
 Graphics/*
 
 # Data
-Data/*.xls*
+Data/**/*.xls*
 Data/map_data/*
-Data/**.docx
+Data/**/*.docx
 Data/quotes/2016*
 Data/quotes/*.csv
 Data/quotes/*.md
-Data/**.ods
+Data/**/*.ods
