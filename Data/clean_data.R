@@ -10,7 +10,7 @@ library(readxl)
 library(stringr)
 
 # Load and clean data
-gpa.data.raw <- read_excel(file.path(PROJHOME, "Data", "masterdata1.6.xlsx"),
+gpa.data.raw <- read_excel(file.path(PROJHOME, "Data", "masterdata1.9_intro.xlsx"),
                            sheet="main data sheet")
 
 # I had to make a few manual adjustments to the Excel file for it to import correctly:
@@ -26,7 +26,7 @@ gpa.data.raw <- read_excel(file.path(PROJHOME, "Data", "masterdata1.6.xlsx"),
 # - International Aid Transparency Initiative Annual Report: Removed "(not all of which are nations)" from the number of countries
 # - Nuclear Materials Security Index: Changed "25+151" to 176 in the number of countries
 # - Sustainable Society Index: Moved "Geurt van de Kerk- E-mail" to the appropriate column
-# - US Chamber International IP Index: Removed quesation mark from 2014 start year
+# - US Chamber International IP Index: Removed question mark from 2014 start year
 
 # Only use the first 30 columns. Need to use [,] indexing because dplyr::select
 # chokes on all the duplicated NA column names
@@ -38,10 +38,10 @@ gpa.data.clean <- gpa.data.raw[, 2:31] %>%
 
 # Clean up issues
 gpa.issues <- gpa.data.clean %>%
-  select(gpa_id, `subject area`) %>%
+  select(gpa_id, `subjectarea`) %>%
   # Multiple GPA issues are split with a "/" (sometimes followed by a space);
   # split into a list column and then unnest that column
-  mutate(subject_area = str_split(`subject area`, "/ *")) %>%
+  mutate(subject_area = str_split(`subjectarea`, "/ *")) %>%
   unnest(subject_area) %>%
   # Clean up issue names
   mutate(subject_area = str_trim(tolower(subject_area))) %>%
@@ -172,9 +172,10 @@ gpa.data.final <- gpa.data.clean %>%
          subject_area, subject_collapsed,
          creator_name, creator_type, creator_clean, creator_collapsed,
          country = country_clean, country_collapsed, ISO3) %>%
-  mutate_at(vars(gpa_id, start_year, creator_type), as.integer) %>%
+  mutate(recent_year = ifelse(recent_year == "2015-2017", 2017, recent_year)) %>% 
+  mutate_at(vars(gpa_id, start_year, recent_year, creator_type), as.integer) %>%
   mutate(active = recent_year >= 2014)
 
 write_csv(gpa.data.final,
           path=file.path(PROJHOME, "Data",
-                         "kelley_simmons_gpa_2017-04-21.csv"))
+                         "kelley_simmons_gpa_2018-07-23.csv"))

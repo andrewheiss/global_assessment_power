@@ -14,7 +14,6 @@
 library(tidyverse)
 library(forcats)
 library(stringr)
-library(Cairo)
 library(ggstance)
 library(ggforce)
 library(maptools)
@@ -87,7 +86,7 @@ clean.cut.range <- function(x) {
 # Load clean data
 #+ message=FALSE
 gpa.data.clean <- read_csv(file.path(PROJHOME, "Data",
-                                     "kelley_simmons_gpa_2017-04-21.csv"))
+                                     "kelley_simmons_gpa_2018-07-05.csv"))
 
 
 #' ## Figure 1: Cumulative number of GPAs.
@@ -113,6 +112,7 @@ year.chunks.long <- year.chunks %>%
   unnest()
 
 years.active <- gpa.data.clean %>% 
+  filter(!is.na(start_year)) %>% 
   rowwise() %>%
   summarise(gpa_id = gpa_id, years = list(start_year:recent_year), 
             last.active = recent_year) %>%
@@ -155,8 +155,9 @@ gpa.cum.plot <- gpas.active.over.time %>%
   # data and aren't repeated like the active ones
   mutate(plot_value = ifelse(imputed.active, num, cum_total)) %>%
   mutate(active = factor(imputed.active, levels=c(TRUE, FALSE),
-                         labels=c("Active GPAs in period", "Cumulative discontinued GPAs"),
-                         ordered=TRUE))
+                         labels=c("Active GPIs in period", "Cumulative discontinued GPIs"),
+                         ordered=TRUE)) %>% 
+  filter(chunk_name != "2015+")
 
 gpas.active <- gpa.data.clean %>% filter(active == TRUE) %>% nrow
 gpas.defunct <- gpa.data.clean %>% filter(active == FALSE) %>% nrow
@@ -491,6 +492,7 @@ subject.counts <- gpa.data.clean.creator.long %>%
   arrange(desc(n))
 
 gpa.creator.cumulative <- gpa.data.clean.creator.long %>%
+  filter(!is.na(start_year)) %>% 
   filter(!is.na(creator_collapsed)) %>%
   # Infer death year based on most recent year if not active
   mutate(end_year = ifelse(active == 0, recent_year, 2015)) %>%
@@ -519,7 +521,31 @@ gpa.creator.cumulative <- gpa.data.clean.creator.long %>%
                                                  "University or Private",
                                                  "Other")))
 
+# Export data
+gpa.creator.cumulative %>% 
+  select(gpa_id, gpa_name, start_year, recent_year, 
+         subject = subject_collapsed, creator = creator_collapsed) %>% 
+  arrange(start_year) %>% 
+  write_csv(path = file.path(PROJHOME, "Output", "gpa_creator_cumulative.csv"))
+ 
+# gpa.creator.cumulative %>%
+#   count(pentad, subject_collapsed) %>%
+#   spread(pentad, nn) %>%
+#   write_csv("~/Desktop/gpa_subject_pentads.csv", na = "")
+# 
+# gpa.creator.cumulative %>%
+#   count(creator_collapsed, subject_collapsed) %>%
+#   spread(creator_collapsed, nn) %>%
+#   write_csv("~/Desktop/gpa_subject_creators.csv", na = "")
+# 
+# gpa.creator.cumulative %>%
+#   count(pentad, subject_collapsed, creator_collapsed) %>%
+#   spread(pentad, nn) %>%
+#   write_csv("~/Desktop/gpa_subject_creator_pentads.csv", na = "")
+
 #+ fig.width=7, fig.height=5
+# position_jitternormal() comes from the development version of ggforce, which isn't on CRAN yet. 
+# Install from GitHub to use: devtools::install_github('thomasp85/ggforce')
 gpa.type.points <- ggplot(gpa.creator.cumulative, 
                           aes(x=pentad, y=subject_collapsed,
                               shape=creator_collapsed)) + 
@@ -535,3 +561,61 @@ set.seed(12345); gpa.type.points
 
 fig.save.cairo(gpa.type.points, filename="figure-x-indicator-creator-points",
                width=7, height=5, seed=12345)
+
+
+#+ fig.width=5, fig.height=4
+#' ## Figure X: Creator types over time
+#' 
+#' *Source: Authors' data*
+#' 
+creator.types.time <- gpa.creator.cumulative %>% 
+  group_by(pentad, creator_collapsed, active) %>% 
+  summarize(n = n()) %>% 
+  filter(active == TRUE) %>% 
+  ungroup() %>% 
+  arrange(desc(n)) %>% 
+  mutate(creator_collapsed = str_replace(creator_collapsed, " or ", "\\\nor ")) %>% 
+  mutate(creator_collapsed = fct_inorder(creator_collapsed))
+
+creator.types.labs <- creator.types.time %>% 
+  group_by(creator_collapsed) %>% 
+  slice(1)
+
+creator.types.lines <- ggplot(creator.types.time, 
+                              aes(x = pentad, y = n, 
+                                  color = creator_collapsed, 
+                                  group = creator_collapsed)) +
+  geom_line(size = 1) +
+  geom_label(data = creator.types.labs, aes(x = pentad, y = n, label = creator_collapsed),
+             hjust = 0, nudge_x = 0.1, size = 3) +
+  labs(x=NULL, y=NULL) +
+  scale_color_manual(values=c("black", "grey25", "grey45", "grey60", "grey70")) +
+  expand_limits(x = 10.6, y = 80) +
+  guides(color = FALSE) +
+  theme_gpa() +
+  theme(axis.text.x=element_text(angle=45, hjust=0.5, vjust=0.5),
+        panel.grid.minor=element_blank())
+creator.types.lines
+
+fig.save.cairo(creator.types.lines, filename="figure-x-creator-types-time-lines",
+               width=5, height=4)
+
+#+ fig.width=5, fig.height=4
+#' ## Figure X: Creator types over time
+#' 
+#' *Source: Authors' data*
+#' 
+creator.types.bars <- ggplot(creator.types.time, 
+                             aes(x = pentad, y = n, fill = fct_rev(creator_collapsed))) +
+  geom_bar(stat = "identity") + 
+  labs(x = NULL,  y = NULL) +
+  expand_limits(y = 150) +
+  scale_fill_manual(values=rev(c("black", "grey40", "grey60", "grey25", "grey80"))) +
+  guides(fill=guide_legend(reverse=TRUE, title=NULL, nrow=1)) +
+  theme_gpa() +
+  theme(axis.text.x=element_text(angle=45, hjust=0.5, vjust=0.5),
+        panel.grid.minor=element_blank())
+creator.types.bars
+
+fig.save.cairo(creator.types.bars, filename="figure-x-creator-types-time-bars",
+               width=5, height=4)
