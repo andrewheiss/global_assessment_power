@@ -18,6 +18,7 @@ library(ggstance)
 library(ggforce)
 library(maptools)
 library(rgdal)
+library(scales)
 library(zoo)
 
 # Useful functions
@@ -81,6 +82,8 @@ clean.cut.range <- function(x) {
       paste0(x.split[1] + 1, "–", x.split[2])
     })
 }
+
+my_percent <- percent_format(accuracy = 1)
 
 
 # Load clean data
@@ -235,12 +238,6 @@ issue.creator.denominator <- gpa.data.clean %>%
 #' double counted cases that straddle issue areas, such as health and
 #' development. Overlapping and unknown creators are ommitted. 
 #' 
-#' Several categories collapse the following subcategories: security =
-#' conflict, military; development = development, aid, health, energy, tourism,
-#' education; trade & finance = trade, financy, education; human rights = human
-#' rights, press freedom, religion, gender; legal = legal, intellectual 
-#' property rights, privacy.
-#' 
 #' N = `r issue.creator.denominator`.
 #' 
 #+ fig.width=5, fig.height=3.5
@@ -248,7 +245,7 @@ fig.by.issue.creator <- ggplot(gpa.issues.creators,
                                aes(x=num, y=subject_collapsed, fill=creator_collapsed)) + 
   geom_barh(stat="identity", position=position_stackv()) + 
   scale_x_continuous(sec.axis = sec_axis(~ . / issue.creator.denominator,
-                                         labels=scales::percent)) +
+                                         labels=my_percent)) +
   # scale_fill_grey(start=0.9, end=0.2) +
   scale_fill_manual(values=rev(c("black", "grey50", "grey70", "grey25", "grey90"))) +
   guides(fill=guide_legend(reverse=TRUE, title=NULL, nrow=1)) +
@@ -283,19 +280,13 @@ issue.denominator <- gpa.data.clean %>%
 #' double counted cases that straddle issue areas, such as health and
 #' development.
 #' 
-#' Several categories collapse the following subcategories: security =
-#' conflict, military; development = development, aid, health, energy, tourism,
-#' education; trade & finance = trade, financy, education; human rights = human
-#' rights, press freedom, religion, gender; legal = legal, intellectual 
-#' property rights, privacy.
-#' 
 #' N = `r issue.denominator` active GPAs.
 #' 
 #+ fig.width=5, fig.height=3.5
 fig.by.issue <- ggplot(gpa.issues, aes(x=issue_count, y=subject_collapsed)) + 
   geom_barh(stat="identity") + 
   scale_x_continuous(sec.axis = sec_axis(~ . / issue.denominator,
-                                         labels=scales::percent)) +
+                                         labels=my_percent)) +
   labs(x=NULL, y=NULL) +
   theme_gpa() + theme(panel.grid.major.y=element_blank())
 fig.by.issue
@@ -326,7 +317,7 @@ creator.denominator <- gpa.data.clean %>%
 fig.by.creator <- ggplot(gpa.creators, aes(x=num, y=creator_collapsed)) +
   geom_barh(stat="identity") +
   scale_x_continuous(sec.axis = sec_axis(~ . / creator.denominator,
-                                         labels=scales::percent)) +
+                                         labels=my_percent)) +
   labs(x=NULL, y=NULL) +
   theme_gpa() + theme(panel.grid.major.y=element_blank())
 fig.by.creator
@@ -356,16 +347,16 @@ creator.ngos <- gpa.creators.active %>%
   filter(creator_collapsed == "NGO") %>%
   select(num) %>% unname() %>% unlist() %>% c()
 
-creator.ngos.pct <- scales::percent(creator.ngos / 
-                                      creator.active.denominator)
+creator.ngos.pct <- my_percent(creator.ngos / 
+                                 creator.active.denominator)
 
 creator.states.igos <- gpa.creators.active %>%
   filter(creator_collapsed %in% c("IGO", "State")) %>%
   summarise(num = sum(num)) %>%
   select(num) %>% unname() %>% unlist() %>% c()
 
-creator.states.igos.pct <- scales::percent(creator.states.igos / 
-                                             creator.active.denominator)
+creator.states.igos.pct <- my_percent(creator.states.igos / 
+                                        creator.active.denominator)
 
 #' The figure below shows the distribution of the creator types among the currently active GPAs in our database, showing that `r creator.ngos.pct` percent of GPAs are created by NGOs, while only `r creator.states.igos.pct` are in the direct control of states or IGOs.
 #' 
@@ -378,7 +369,7 @@ creator.states.igos.pct <- scales::percent(creator.states.igos /
 fig.by.creator.active <- ggplot(gpa.creators.active, aes(x=num, y=creator_collapsed)) +
   geom_barh(stat="identity") +
   scale_x_continuous(sec.axis = sec_axis(~ . / creator.active.denominator,
-                                         labels=scales::percent)) +
+                                         labels=my_percent)) +
   labs(x=NULL, y=NULL) +
   theme_gpa() + theme(panel.grid.major.y=element_blank())
 fig.by.creator.active
@@ -405,7 +396,7 @@ country.denominator <- sum(gpa.countries$num)
 fig.by.country <- ggplot(gpa.countries, aes(x=num, y=country_collapsed)) +
   geom_barh(stat="identity") +
   scale_x_continuous(sec.axis = sec_axis(~ . / country.denominator,
-                                         labels=scales::percent)) +
+                                         labels=my_percent)) +
   labs(x=NULL, y=NULL) +
   theme_gpa() + theme(panel.grid.major.y=element_blank())
 fig.by.country
@@ -527,9 +518,6 @@ gpa.creator.cumulative <- gpa.data.clean.creator.long %>%
   left_join(subject.counts, by="subject_collapsed") %>%
   arrange(pentad, desc(n)) %>%
   mutate(subject_collapsed = ordered(fct_inorder(subject_collapsed)),
-         subject_collapsed = fct_recode(subject_collapsed, 
-                                        `Human rights & Gender` = "Human Rights",
-                                        `Privacy & Legal issues` = "Legal"),
          creator_collapsed = ordered(fct_relevel(creator_collapsed,
                                                  "NGO", "IGO", "State",
                                                  "University or Private",
