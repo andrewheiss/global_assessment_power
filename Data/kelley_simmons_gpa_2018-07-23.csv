@@ -36,7 +36,7 @@ gpa_id,gpa_name,website,start_year,recent_year,subject_area,subject_collapsed,cr
 35,Electronic communications Sector Assesment,https://www.ebrd.com/cs/Satellite?c=Content&cid=1395241489681&d=&pagename=EBRD%2FContent%2FContentLayout,2008,2012,Economic,Economic,European Bank For Reconstruction and Development,5,IGO,IGO,United Kingdom,United Kingdom,GBR,FALSE
 36,Enabling the Business of Agriculture,http://eba.worldbank.org,2015,2017,Economic,Economic,World Bank,5,IGO,IGO,United States,United States,USA,TRUE
 37,Energy Architecture Performance Index,https://www.weforum.org/reports/global-energy-architecture-performance-index-report-2017,2013,2017,"Economic, Environment, Development","Economic, Environment, Development",World Economic Forum,3,NGO,NGO,Switzerland,Europe,CHE,TRUE
-38,Energy Trilemma Index,https://trilemma.worldenergy.org,2014,2017,"Energy, Environment","Environment, Environment",World Energy Council,3,NGO,NGO,NA,NA,NA,TRUE
+38,Energy Trilemma Index,https://trilemma.worldenergy.org,2014,2017,"Energy, Environment","Development, Environment",World Energy Council,3,NGO,NGO,NA,NA,NA,TRUE
 39,Environmental Democracy Index,http://www.environmentaldemocracyindex.org,2015,2015,"Environment, Governance","Environment, Governance","World Resources Institute, The Access Inititave",3,NGO,NGO,United States,United States,USA,TRUE
 40,Environmental Performance Index,http://epi.yale.edu/epi2012/rankings,2000,2018,Environment,Environment,Center for International Earth Science Information Network (Columbia University) and Yale Center for Environmental Law and Policy (Yale University),1,University,University or Private,USA,United States,USA,TRUE
 41,Environmental Performance Index (earlier Environmental Sustainability Index),http://www.yale.edu/envirocenter/epm.htm,1995,2005,Environment,Environment,Center for International Earth Science Information Network (Columbia University) and Yale Center for Environmental Law and Policy (Yale University),1,University,University or Private,United States,United States,USA,FALSE
@@ -52,7 +52,7 @@ gpa_id,gpa_name,website,start_year,recent_year,subject_area,subject_collapsed,cr
 50,Fragile State Index/ Failed state index,http://fundforpeace.org/fsi/2018/04/24/fragile-states-index-2018-annual-report/,2005,2018,Governance,Governance,Foreign Policy/ Fund for Peace,3,NGO,NGO,USA,United States,USA,TRUE
 51,Freedom in the World,http://www.freedomhouse.org/report-types/freedom-world,1973,2018,Governance,Governance,Freedom House,3,NGO,NGO,USA,United States,USA,TRUE
 52,Freedom of the Press,http://www.freedomhouse.org/report-types/freedom-press,1980,2016,Human Rights,Human Rights,Freedom House,3,NGO,NGO,USA,United States,USA,TRUE
-53,Freedom on the Net,https://freedomhouse.org/report-types/freedom-net,2011,2017,Pressfreedom,Pressfreedom,Freedom House,3,NGO,NGO,United States,United States,USA,TRUE
+53,Freedom on the Net,https://freedomhouse.org/report-types/freedom-net,2011,2017,Press Freedom,Human Rights,Freedom House,3,NGO,NGO,United States,United States,USA,TRUE
 54,Gender Development Index,http://hdr.undp.org/en/statistics/indices/gdi_gem/,1995,2016,"Gender, Social","Human Rights, Social",UNDP,5,IGO,IGO,United States,United States,USA,TRUE
 55,Gender Equity Index,http://www.socialwatch.org/about,2007,2012,"Social, Gender","Social, Human Rights",Social Watch,3,NGO,NGO,Uruguay,Global South,URY,FALSE
 56,Gender Inequality Index,http://hdr.undp.org/en/statistics/gii,1995,2016,Development,Development,United Nations Development Program (UNDP),5,IGO,IGO,USA,United States,USA,TRUE
@@ -74,7 +74,7 @@ gpa_id,gpa_name,website,start_year,recent_year,subject_area,subject_collapsed,cr
 72,Global Innovation Index,http://www.globalinnovationindex.org/content.aspx?page=GII-Home,2008,2018,"Governance, Economic","Governance, Economic",World Intellectual Property Organization (primary),5,IGO,IGO,Switzerland,Europe,CHE,TRUE
 73,Global Integrity Index,http://www.globalintegrity.org/report,2004,2013,Governance,Governance,Global Integrity,3,NGO,NGO,USA,United States,USA,FALSE
 74,Global Microscope,http://www.centerforfinancialinclusion.org/publications-a-resources/global-microscope,2013,2016,Economic,Economic,EIU and Center for Financial Inclusion,3,NGO,NGO,United States,United States,USA,TRUE
-75,Global Open Data Index,https://index.okfn.org/about/,2013,2016,Pressfreedom,Pressfreedom,Open Knowledge International,3,NGO,NGO,United States,United States,USA,TRUE
+75,Global Open Data Index,https://index.okfn.org/about/,2013,2016,Press Freedom,Human Rights,Open Knowledge International,3,NGO,NGO,United States,United States,USA,TRUE
 76,Global Peace Index,http://www.visionofhumanity.org/#/page/about-gpi,2007,2018,Conflict,Security,Institute for Economics and Peace/Economist Intelligence Unit,3,NGO,NGO,USA,United States,USA,TRUE
 77,Global Right to Information Rating,http://www.rti-rating.org,2011,2015,Governance,Governance,Centre for Law and Democracy and Access Info Europe,3,NGO,NGO,Canada,Other developed nations,CAN,TRUE
 78,Global Slavery Index,http://www.globalslaveryindex.org/report/?download,2013,2016,Social,Social,Walk Free Foundation,3,NGO,NGO,Australia,Other developed nations,AUS,TRUE
@@ -114,7 +114,7 @@ gpa_id,gpa_name,website,start_year,recent_year,subject_area,subject_collapsed,cr
 112,Lisbon Scorecard,http://www.ceps.eu/content/1noth-lisbon-scorecard-measures-progress-road-2020-ceps-membership-meeting,2000,2010,Economic,Economic,Center for European Reform,3,NGO,NGO,United Kingdom,United Kingdom,GBR,FALSE
 113,Logistics Performance Index,http://lpi.worldbank.org/,2007,2016,"Economic, Trade","Economic, Trade & Finance",The World bank,5,IGO,IGO,USA,United States,USA,TRUE
 114,Low-Carbon Competitiveness Index,http://www.vivideconomics.com/uploads/reports/g20-low-carbon-competitiveness-index-2012-update/LCCI_Index_2012_update.pdf,2009,2013,Environment,Environment,Vivid Economics,4,Private,University or Private,United Kingdom,United Kingdom,GBR,FALSE
-115,MCC Country Scorecards,https://www.mcc.gov/who-we-fund/scorecards,2004,2018,Governance;Economic,Governance;Economic,MCC,2,National government,State,United States,United States,USA,TRUE
+115,MCC Country Scorecards,https://www.mcc.gov/who-we-fund/scorecards,2004,2018,"Governance, Economic","Governance, Economic",MCC,2,National government,State,United States,United States,USA,TRUE
 116,Media Sustainability Index,http://www.irex.org/project/media-sustainability-index-msi,2000,2018,"Social, Development","Social, Development",International Research and Exchanges Board/ USaid,2,National government,State,USA,United States,USA,TRUE
 117,Millennium Challenge Account country rankings,http://www.mcc.gov/pages/selection/scorecards,2004,2017,Development,Development,U.S. Government Millennium Challenge Corporation,2,National government,State,USA,United States,USA,TRUE
 118,Mother’s Index,https://www.savethechildren.net/state-worlds-mothers-2015,2000,2015,Social,Social,Save the Children,3,NGO,NGO,United Kingdom,United Kingdom,GBR,TRUE
@@ -127,7 +127,7 @@ gpa_id,gpa_name,website,start_year,recent_year,subject_area,subject_collapsed,cr
 125,OECD Better Life Index,http://www.oecdbetterlifeindex.org/,2011,2017,"Social, Economic","Social, Economic",OECD,5,IGO,IGO,USA,United States,USA,TRUE
 126,OECD Social Institutions and Gender Index,http://genderindex.org/,2009,2014,"Gender, Social","Human Rights, Social",OECD,5,IGO,IGO,USA,United States,USA,TRUE
 127,Open Budget Survey/Open budget index,http://internationalbudget.org,2006,2017,Finance,Trade & Finance,International Budget Partnership,3,NGO,NGO,USA,United States,USA,TRUE
-128,Open Data Barometer,http://opendatabarometer.org,2013,2016,Pressfreedom,Pressfreedom,World Wide Web Foundation,3,NGO,NGO,United Kingdom,United Kingdom,GBR,TRUE
+128,Open Data Barometer,http://opendatabarometer.org,2013,2016,Press Freedom,Human Rights,World Wide Web Foundation,3,NGO,NGO,United Kingdom,United Kingdom,GBR,TRUE
 129,Press Freedom Index,http://en.rsf.org,2002,2018,Human Rights,Human Rights,Reporters without Borders,3,NGO,NGO,France,Europe,FRA,TRUE
 130,Privacy Index/National Privacy Ranking,https://bestvpn.org/countries-ranked-by-privacy/,1997,2007,Governance,Governance,Privacy International,3,NGO,NGO,United Kingdom,United Kingdom,GBR,FALSE
 131,Program for International Student Assessment (PISA),http://nces.ed.gov/surveys/pisa/,2000,2015,Education,Development,OECD/ Institute of Education Sciences,5,IGO,IGO,"France, USA",Europe,FRA,TRUE
@@ -142,12 +142,12 @@ gpa_id,gpa_name,website,start_year,recent_year,subject_area,subject_collapsed,cr
 140,Social Progress Index,http://www.socialprogressindex.com/overview,2014,2016,Social,Social,Social Progress Imperative,3,NGO,NGO,United Kingdom,United Kingdom,GBR,TRUE
 141,Social Watch Scorecard,http://www.socialwatch.org/node/11939,1999,2005,"Social, Development","Social, Development",Social Watch,3,NGO,NGO,Uruguay,Global South,URY,FALSE
 142,Soft Power 30,http://softpower30.portland-communications.com,2015,2017,Governance,Governance,Portland,4,Private,University or Private,United States,United States,USA,TRUE
-143,Special 301 Report,https://ustr.gov/issue-areas/intellectual-property/Special-301,1989,2018,"Trade, Intellectualpropertyrights","Trade & Finance, Intellectualpropertyrights",Office of United States Trade Representative,2,National government,State,USA,United States,USA,TRUE
+143,Special 301 Report,https://ustr.gov/issue-areas/intellectual-property/Special-301,1989,2018,"Trade, Intellectual Property Rights","Trade & Finance, Legal",Office of United States Trade Representative,2,National government,State,USA,United States,USA,TRUE
 144,Statistical Capacity Indicator,http://datatopics.worldbank.org/statisticalcapacity/,2004,2017,Governance,Governance,World Bank,5,IGO,IGO,USA,United States,USA,TRUE
 145,Sustainable Governance Indicators,http://www.sgi-network.org/2014/,2009,2017,"Governance, Environment","Governance, Environment",Bertelsmann Foundation,3,NGO,NGO,Germany,Europe,DEU,TRUE
 146,Sustainable Society Index,http://www.ssfindex.com/about-ssf/,2006,2016,Development,Development,Sustainable Society Foundation,3,NGO,NGO,Netherlands,Europe,NLD,TRUE
 147,The African Report on Child Wellbeing / The Child Friendliness Index,http://www.africanchild.report,2008,2016,"Social, Development","Social, Development",African Child Policy Forum,3,NGO,NGO,Ethiopia,Global South,ETH,TRUE
-148,The Enabling Trade Index,http://www3.weforum.org/docs/WEF_GlobalEnablingTrade_Report_2014.pdf,2008,2016,"Trade, Intellectualpropertyrights","Trade & Finance, Intellectualpropertyrights",Word Economic Forum,5,IGO,IGO,Switzerland,Europe,CHE,TRUE
+148,The Enabling Trade Index,http://www3.weforum.org/docs/WEF_GlobalEnablingTrade_Report_2014.pdf,2008,2016,"Trade, Intellectual Property Rights","Trade & Finance, Legal",Word Economic Forum,5,IGO,IGO,Switzerland,Europe,CHE,TRUE
 149,Trafficking in Persons report,http://www.state.gov/j/tip/rls/tiprpt/,2001,2018,Human Rights,Human Rights,US Department of State,2,National government,State,USA,United States,USA,TRUE
 150,Travel and Tourism Competitiveness Report,https://www.weforum.org/reports/the-travel-tourism-competitiveness-report-2017,2007,2017,Tourism,Development,World Economic Forum,3,NGO,NGO,Switzerland,Europe,CHE,TRUE
 151,Trends in International Mathematics and Science Study (TIMSS),http://nces.ed.gov/Timss/,1995,2015,Education,Development,TIMSS and PIRLS International Study Center (Boston College) and the International Association for the Evaluation of Educational Achievement (IEA),6,NGO/university,Other,USA,United States,USA,TRUE

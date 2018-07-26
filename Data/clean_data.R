@@ -39,13 +39,15 @@ gpa.data.clean <- gpa.data.raw[, 2:31] %>%
 # Clean up issues
 gpa.issues <- gpa.data.clean %>%
   select(gpa_id, `subjectarea`) %>%
-  # Multiple GPA issues are split with a "/" (sometimes followed by a space);
+  # Multiple GPA issues are split with a "/" or a ";";
   # split into a list column and then unnest that column
-  mutate(subject_area = str_split(`subjectarea`, "/ *")) %>%
+  mutate(subject_area = str_split(`subjectarea`, "/|;")) %>%
   unnest(subject_area) %>%
   # Clean up issue names
   mutate(subject_area = str_trim(tolower(subject_area))) %>%
   mutate(subject_area = case_when(
+    .$subject_area == "intellectualpropertyrights" ~ "intellectual property rights",
+    .$subject_area == "pressfreedom" ~ "press freedom",
     .$subject_area == "economy" ~ "economic",
     .$subject_area == "economics" ~ "economic",
     .$subject_area == "environmen" ~ "environment",
@@ -61,25 +63,32 @@ gpa.issues <- gpa.data.clean %>%
     TRUE ~ .$subject_area
   ))
 
+gpa.subjects.lookup <- tribble(
+  ~subject_area,   ~subject_collapsed,
+  "development",   "development",
+  "education",     "development",
+  "energy",        "development",
+  "health",        "development",
+  "tourism",       "development",
+  "economic",      "economic",
+  "environment",   "environment",
+  "governance",    "governance",
+  "gender",        "human rights",
+  "human rights",  "human rights",
+  "press freedom", "human rights",
+  "religion",      "human rights",
+  "intellectual property rights", "legal",
+  "legal",         "legal",
+  "conflict",      "security",
+  "military",      "security",
+  "social",        "social",
+  "finance",       "trade & finance",
+  "technology",    "trade & finance",
+  "trade",         "trade & finance")
+
+
 gpa.issues.collapsed <- gpa.issues %>%
-  # Collapse some categories
-  mutate(subject_collapsed = recode(subject_area,
-                                    conflict = "security",
-                                    military = "security",
-                                    aid = "development",
-                                    health = "development",
-                                    energy = "environment",
-                                    tourism = "development",
-                                    education = "development",
-                                    trade = "trade & finance",
-                                    finance = "trade & finance",
-                                    technology = "trade & finance",
-                                    `press freedom` = "human rights",
-                                    religion = "human rights",
-                                    gender = "human rights",
-                                    `intellectual property rights` = "legal",
-                                    privacy = "legal")) %>%
-  filter(!is.na(subject_collapsed), subject_collapsed != "other") %>%
+  left_join(gpa.subjects.lookup, by = "subject_area") %>% 
   # Combine all the subjects for a given GPA into a comma-separated list
   mutate(subject_collapsed = str_to_title(subject_collapsed)) %>%
   group_by(gpa_id) %>%
@@ -179,3 +188,7 @@ gpa.data.final <- gpa.data.clean %>%
 write_csv(gpa.data.final,
           path=file.path(PROJHOME, "Data",
                          "kelley_simmons_gpa_2018-07-23.csv"))
+
+gpa.subjects.lookup %>% 
+  mutate_all(funs(str_to_title)) %>% 
+  write_csv(file.path(PROJHOME, "Data", "collapsed_subjects.csv"))

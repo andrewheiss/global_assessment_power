@@ -86,7 +86,9 @@ clean.cut.range <- function(x) {
 # Load clean data
 #+ message=FALSE
 gpa.data.clean <- read_csv(file.path(PROJHOME, "Data",
-                                     "kelley_simmons_gpa_2018-07-05.csv"))
+                                     "kelley_simmons_gpa_2018-07-23.csv"))
+
+subjects_collapsed <- read_csv(file.path(PROJHOME, "Data", "collapsed_subjects.csv"))
 
 
 #' ## Figure 1: Cumulative number of GPAs.
@@ -191,6 +193,18 @@ fig.cum.gpas
 
 fig.save.cairo(fig.cum.gpas, filename="figure-1-cumulative-gpas",
                width=5.5, height=2.5)
+
+
+#' ## Collapsed subjects
+#' 
+#' Several of the smaller subject areas are collapsed into larger overarching 
+#' categories, listed in the table below:
+#' 
+#+ results='asis'
+subjects_collapsed %>% 
+  select(`Subject (collapsed)` = subject_collapsed,
+         `Subject (original)` = subject_area) %>% 
+  pander::pandoc.table(justify = "ll")
 
 
 #' ## Figure 2 (new): Number of GPAs, by issue and creator type.
