@@ -89,7 +89,7 @@ my_percent <- percent_format(accuracy = 1)
 # Load clean data
 #+ message=FALSE
 gpa.data.clean <- read_csv(file.path(PROJHOME, "Data",
-                                     "kelley_simmons_gpa_2018-07-23.csv"))
+                                     "kelley_simmons_gpa_2018-07-26.csv"))
 
 subjects_collapsed <- read_csv(file.path(PROJHOME, "Data", "collapsed_subjects.csv"))
 
@@ -559,10 +559,10 @@ gpa.type.points <- ggplot(gpa.creator.cumulative,
   theme_gpa() +
   theme(axis.text.x=element_text(angle=45, hjust=0.5, vjust=0.5),
         panel.grid.major=element_blank())
-set.seed(12345); gpa.type.points
+set.seed(1234); gpa.type.points
 
 fig.save.cairo(gpa.type.points, filename="figure-x-indicator-creator-points",
-               width=7, height=5, seed=12345)
+               width=7, height=5, seed=1234)
 
 
 #+ fig.width=5, fig.height=4

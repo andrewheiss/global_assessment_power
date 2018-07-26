@@ -10,7 +10,7 @@ library(readxl)
 library(stringr)
 
 # Load and clean data
-gpa.data.raw <- read_excel(file.path(PROJHOME, "Data", "masterdata1.9_intro.xlsx"),
+gpa.data.raw <- read_excel(file.path(PROJHOME, "Data", "masterdata2.0_intro.xlsx"),
                            sheet="main data sheet")
 
 # I had to make a few manual adjustments to the Excel file for it to import correctly:
@@ -69,18 +69,13 @@ gpa.subjects.lookup <- tribble(
   "education",     "development",
   "energy",        "development",
   "health",        "development",
-  "tourism",       "development",
   "economic",      "economic",
   "environment",   "environment",
   "governance",    "governance",
   "gender",        "human rights",
   "human rights",  "human rights",
   "press freedom", "human rights",
-  "religion",      "human rights",
-  "intellectual property rights", "legal",
-  "legal",         "legal",
-  "conflict",      "security",
-  "military",      "security",
+  "security",      "security",
   "social",        "social",
   "finance",       "trade & finance",
   "technology",    "trade & finance",
@@ -91,12 +86,13 @@ gpa.issues.collapsed <- gpa.issues %>%
   left_join(gpa.subjects.lookup, by = "subject_area") %>% 
   # Combine all the subjects for a given GPA into a comma-separated list
   mutate(subject_collapsed = str_to_title(subject_collapsed)) %>%
-  group_by(gpa_id) %>%
-  mutate(subject_collapsed = paste(subject_collapsed, collapse=", ")) %>%
   # Get unique combinations of organizations and collapsed issues (for cases
   # where a collapsed category gets duplicated; like if the GPA did aid and
   # health, which are now both development)
-  ungroup() %>%
+  distinct(gpa_id, subject_collapsed) %>% 
+  group_by(gpa_id) %>%
+  mutate(subject_collapsed = paste(subject_collapsed, collapse=", ")) %>%
+  ungroup() %>% 
   distinct(gpa_id, subject_collapsed)
 
 gpa.issues.clean <- gpa.issues %>%
@@ -187,7 +183,7 @@ gpa.data.final <- gpa.data.clean %>%
 
 write_csv(gpa.data.final,
           path=file.path(PROJHOME, "Data",
-                         "kelley_simmons_gpa_2018-07-23.csv"))
+                         "kelley_simmons_gpa_2018-07-26.csv"))
 
 gpa.subjects.lookup %>% 
   mutate_all(funs(str_to_title)) %>% 
