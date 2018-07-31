@@ -65,8 +65,8 @@ gpa.issues <- gpa.data.clean %>%
 
 gpa.subjects.lookup <- tribble(
   ~subject_area,   ~subject_collapsed,
+  "education",     "education",
   "development",   "development",
-  "education",     "development",
   "energy",        "development",
   "health",        "development",
   "economic",      "economic",
