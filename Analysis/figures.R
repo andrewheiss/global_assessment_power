@@ -559,7 +559,7 @@ gpa.type.points <- ggplot(gpa.creator.cumulative,
   theme_gpa() +
   theme(axis.text.x=element_text(angle=45, hjust=0.5, vjust=0.5),
         panel.grid.major=element_blank())
-set.seed(1234); gpa.type.points
+set.seed(12345); gpa.type.points
 
 fig.save.cairo(gpa.type.points, filename="figure-x-indicator-creator-points",
                width=7, height=5, seed=1234)
